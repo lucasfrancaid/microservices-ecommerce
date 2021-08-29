@@ -1,9 +1,9 @@
 # Authentication Service
 
 ## Responsibilities
-- Register
-- Authentication
-- Recovery
+- Sign Up
+- Sign In
+- Recovery Password
 
 ## Stack
 - Python 3.9
@@ -12,3 +12,13 @@
 - Pytest
 - FastAPI as Adapter
 
+## Tests
+To run tests locally, is necessary activate virtualenv:
+```bash
+pipenv shell
+```
+
+Running tests:
+```bash
+make test args=-v
+```
