@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pydantic = "*"
+email-validator = "*"
 
 [requires]
 python_version = "3.9"
