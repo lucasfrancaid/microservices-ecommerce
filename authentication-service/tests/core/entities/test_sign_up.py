@@ -4,20 +4,20 @@ from typing import Dict
 import pytest
 from pydantic import ValidationError
 
-from service.core.domains.sign_up import SignUpDomain
+from service.core.entities.sign_up import SignUpEntity
 
 
-def test_sign_up_domain_from_dict(sign_up_dict: Dict):
-    sign_up_domain = SignUpDomain(**sign_up_dict)
+def test_sign_up_entity_from_dict(sign_up_entity_dict: Dict):
+    sign_up_entity = SignUpEntity(**sign_up_entity_dict)
 
-    assert sign_up_domain.dict() == sign_up_dict
+    assert sign_up_entity.dict() == sign_up_entity_dict
 
 
-def test_sign_up_domain_invalid_email(sign_up_dict: Dict):
-    sign_up_dict['email'] = 'luc@s@domain.com.br'
+def test_sign_up_entity_invalid_email_should_raise_validation_error(sign_up_entity_dict: Dict):
+    sign_up_entity_dict['email'] = 'luc@s@entity.com.br'
 
     with pytest.raises(ValidationError) as exc:
-        SignUpDomain(**sign_up_dict)
+        SignUpEntity(**sign_up_entity_dict)
 
     error = literal_eval(exc.value.json())[0]
 
@@ -26,11 +26,11 @@ def test_sign_up_domain_invalid_email(sign_up_dict: Dict):
     assert error['type'] == 'value_error.email'
 
 
-def test_sign_up_domain_full_name_must_be_more_than_one_word(sign_up_dict: Dict):
-    sign_up_dict['full_name'] = 'Lucas'
+def test_sign_up_entity_full_name_must_be_more_than_one_word(sign_up_entity_dict: Dict):
+    sign_up_entity_dict['full_name'] = 'Lucas'
 
     with pytest.raises(ValidationError) as exc:
-        SignUpDomain(**sign_up_dict)
+        SignUpEntity(**sign_up_entity_dict)
 
     error = literal_eval(exc.value.json())[0]
 
@@ -39,11 +39,11 @@ def test_sign_up_domain_full_name_must_be_more_than_one_word(sign_up_dict: Dict)
     assert error['type'] == 'value_error'
 
 
-def test_sign_up_domain_password_length_must_be_equal_or_more_than_8_characters(sign_up_dict: Dict):
-    sign_up_dict['password'] = 'Abc123'
+def test_sign_up_entity_password_length_must_be_equal_or_more_than_8_characters(sign_up_entity_dict: Dict):
+    sign_up_entity_dict['password'] = 'Abc123'
 
     with pytest.raises(ValidationError) as exc:
-        SignUpDomain(**sign_up_dict)
+        SignUpEntity(**sign_up_entity_dict)
 
     error = literal_eval(exc.value.json())[0]
 
@@ -52,11 +52,11 @@ def test_sign_up_domain_password_length_must_be_equal_or_more_than_8_characters(
     assert error['type'] == 'value_error.any_str.min_length'
 
 
-def test_sign_up_domain_password_confirmation_length_must_be_equal_or_more_than_8_characters(sign_up_dict: Dict):
-    sign_up_dict['password_confirmation'] = 'Abc123'
+def test_sign_up_entity_password_confirmation_length_must_be_equal_or_more_than_8_characters(sign_up_entity_dict: Dict):
+    sign_up_entity_dict['password_confirmation'] = 'Abc123'
 
     with pytest.raises(ValidationError) as exc:
-        SignUpDomain(**sign_up_dict)
+        SignUpEntity(**sign_up_entity_dict)
 
     error = literal_eval(exc.value.json())[0]
 
@@ -65,12 +65,12 @@ def test_sign_up_domain_password_confirmation_length_must_be_equal_or_more_than_
     assert error['type'] == 'value_error.any_str.min_length'
 
 
-def test_sign_up_domain_password_and_password_confirmation_must_be_equal(sign_up_dict: Dict):
-    sign_up_dict['password'] = 'MyPass1234'
-    sign_up_dict['password_confirmation'] = 'MyPass12345'
+def test_sign_up_entity_password_and_password_confirmation_must_be_equal(sign_up_entity_dict: Dict):
+    sign_up_entity_dict['password'] = 'MyPass1234'
+    sign_up_entity_dict['password_confirmation'] = 'MyPass12345'
 
     with pytest.raises(ValidationError) as exc:
-        SignUpDomain(**sign_up_dict)
+        SignUpEntity(**sign_up_entity_dict)
 
     error = literal_eval(exc.value.json())[0]
 
