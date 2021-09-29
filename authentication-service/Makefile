@@ -8,6 +8,11 @@ test: dev_packages
 	@echo '--> Running Tests for Authentication Service'
 	@python -m pytest $(args)
 
+coverage:
+	@coverage run --source service -m pytest
+	@coverage report -m
+	@coverage html
+
 dev_packages:
 	@echo '--> Installing dev packages'
 	@pipenv install --dev

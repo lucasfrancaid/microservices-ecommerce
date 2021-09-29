@@ -22,3 +22,8 @@ Running tests:
 ```bash
 make test args=-v
 ```
+
+Coverage generate:
+```bash
+make coverage
+```
