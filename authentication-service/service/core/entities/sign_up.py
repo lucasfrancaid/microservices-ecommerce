@@ -1,8 +1,11 @@
 from pydantic import BaseModel, EmailStr, constr, validator
 
 
-class SignUpDomain(BaseModel):
+class SignUpEmailEntity(BaseModel):
     email: EmailStr
+
+
+class SignUpEntity(SignUpEmailEntity):
     full_name: str
     password: constr(min_length=8)
     password_confirmation: constr(min_length=8)
