@@ -22,28 +22,28 @@ class SignUpUseCase:
 
     def handler(self, entity: SignUpEntity) -> Dict:
         serialized_user = self.serialize(entity=entity)
-        user = self.user_register(serialized_user)
-        self.send_email(user)
-        return user.dict()
+        user_entity = self.user_register(user_entity=serialized_user)
+        self.send_email(user_entity)
+        return user_entity.dict()
 
     def serialize(self, entity: SignUpEntity) -> UserEntity:
         delimiter = ' '
         first_name, *last_name = entity.full_name.split(delimiter)
         hash_password = self.password_manager.hash(password=entity.password)
-        user = UserEntity(
+        user_entity = UserEntity(
             first_name=first_name,
             last_name=delimiter.join(last_name),
             email=entity.email,
             hash_password=hash_password
         )
-        return user
+        return user_entity
 
-    def user_register(self, user: UserEntity) -> UserEntity:
-        registered_user = self.repository.create(user)
+    def user_register(self, user_entity: UserEntity) -> UserEntity:
+        registered_user = self.repository.create(entity=user_entity)
         # Mock return
-        registered_user = user
+        registered_user = user_entity
         registered_user.user_id = 1
         return registered_user
 
-    def send_email(self, user: UserEntity) -> None:
+    def send_email(self, user_entity: UserEntity) -> None:
         print('--> Email was sent!')

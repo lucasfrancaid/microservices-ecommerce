@@ -31,12 +31,27 @@ def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
     assert serialized_user.confirmation_code is None
 
 
-def test_sign_up_use_case_handler(sign_up_entity_dict: Dict):
-    entity = SignUpEntity(**sign_up_entity_dict)
+def test_sign_up_use_case_user_register(user_entity_dict: Dict):
+    user_entity = UserEntity(**user_entity_dict)
     use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
 
-    registered_user = use_case.handler(entity=entity)
+    registered_user = use_case.user_register(user_entity=user_entity)
+
+    assert registered_user.user_id == 1
+    assert registered_user.email == user_entity.email
+    assert isinstance(registered_user.hash_password, bytes)
+
+
+def test_sign_up_use_case_handler(sign_up_entity_dict: Dict):
+    sign_up_entity = SignUpEntity(**sign_up_entity_dict)
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
+
+    registered_user = use_case.handler(entity=sign_up_entity)
 
     assert registered_user['user_id'] == 1
-    assert registered_user['email'] == entity.email
+    assert registered_user['email'] == sign_up_entity.email
     assert isinstance(registered_user['hash_password'], bytes)
+    assert registered_user['hash_password'] == sign_up_entity.password.encode()
+    assert f'{registered_user["first_name"]} {registered_user["last_name"]}' == sign_up_entity.full_name
+    assert registered_user['is_active'] is False
+    assert registered_user['confirmation_code'] is None
