@@ -1,26 +1,25 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from typing import Optional
 
 from service.core.entities.user import UserEntity
 
 
-@dataclass
 class AuthenticationRepository(ABC):
 
     @abstractmethod
-    def create(entity: UserEntity = None):
+    def create(entity: UserEntity):
         raise NotImplementedError
 
     @abstractmethod
-    def get(user_id: int = None, email: str = None):
+    def get(user_id: Optional[int] = None, email: Optional[str] = None):
         raise NotImplementedError
 
     @abstractmethod
-    def update(user_id: int = None):
+    def update(user_id: int):
         raise NotImplementedError
 
     @abstractmethod
-    def delete(user_id: int = None):
+    def delete(user_id: int):
         raise NotImplementedError
 
 
@@ -31,7 +30,7 @@ class AuthenticationRepositoryNone(AuthenticationRepository):
         pass
 
     @staticmethod
-    def get(user_id: int = None, email: str = None):
+    def get(user_id: Optional[int] = None, email: Optional[str] = None):
         pass
 
     @staticmethod

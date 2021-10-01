@@ -5,16 +5,16 @@ from service.core.repositories.authentication import AuthenticationRepository, A
 
 def test_authentication_repository_abstract_class():
     with pytest.raises(NotImplementedError):
-        AuthenticationRepository.create()
+        AuthenticationRepository.create(entity=None)
 
     with pytest.raises(NotImplementedError):
         AuthenticationRepository.get()
 
     with pytest.raises(NotImplementedError):
-        AuthenticationRepository.update()
+        AuthenticationRepository.update(user_id=None)
 
     with pytest.raises(NotImplementedError):
-        AuthenticationRepository.delete()
+        AuthenticationRepository.delete(user_id=None)
 
 
 def test_authentication_repository_none():
