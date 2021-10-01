@@ -5,14 +5,14 @@ from service.core.security.password_manager import PasswordManager, PasswordMana
 
 def test_password_manager_abstract_class():
     with pytest.raises(NotImplementedError):
-        PasswordManager.hash(password=None, salt=None)
+        PasswordManager.hash(password=None)
 
     with pytest.raises(NotImplementedError):
         PasswordManager.check(password=None, hashed_password=None)
 
 
 def test_password_manager_none():
-    manager = PasswordManagerNone()
+    manager = PasswordManagerNone(salt=None)
 
-    assert manager.hash(password=None, salt=None) is None
+    assert manager.hash(password=None) is None
     assert manager.check(password=None, hashed_password=None) is None

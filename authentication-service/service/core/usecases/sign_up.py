@@ -3,6 +3,7 @@ from typing import Dict
 from service.core.entities.user import UserEntity
 from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity
 from service.core.repositories.authentication import AuthenticationRepository
+from service.core.security.password_manager import PasswordManager
 
 
 class SignUpUseCase:
@@ -10,32 +11,30 @@ class SignUpUseCase:
     def __init__(
         self,
         repository: AuthenticationRepository,
-        entity: SignUpEntity = None,
-        email_entity: SignUpEmailEntity = None
+        password_manager: PasswordManager,
     ) -> None:
         self.repository: AuthenticationRepository = repository
-        self.entity: SignUpEntity = entity
-        self.email_entity: SignUpEmailEntity = email_entity
+        self.password_manager: PasswordManager = password_manager
 
-    def check_if_email_is_available(self) -> bool:
-        user = self.repository.get(email=self.email_entity)
+    def check_if_email_is_available(self, email_entity: SignUpEmailEntity) -> bool:
+        user = self.repository.get(email=email_entity)
         return True if user else False
 
-    def handler(self) -> Dict:
-        serialized_user = self.serialize()
+    def handler(self, entity: SignUpEntity) -> Dict:
+        serialized_user = self.serialize(entity=entity)
         user = self.user_register(serialized_user)
         self.send_email(user)
         return user.dict()
 
-    def serialize(self) -> UserEntity:
+    def serialize(self, entity: SignUpEntity) -> UserEntity:
         delimiter = ' '
-        first_name, *last_name = self.entity.full_name.split(delimiter)
-        # Hash password
+        first_name, *last_name = entity.full_name.split(delimiter)
+        hash_password = self.password_manager.hash(password=entity.password)
         user = UserEntity(
             first_name=first_name,
             last_name=delimiter.join(last_name),
-            email=self.entity.email,
-            hash_password=self.entity.password.encode()
+            email=entity.email,
+            hash_password=hash_password
         )
         return user
 

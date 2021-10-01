@@ -1,27 +1,27 @@
 from typing import Dict
 
-from pydantic.types import _registered
-
 from service.core.entities.user import UserEntity
 from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity
 from service.core.usecases.sign_up import SignUpUseCase
 from service.core.repositories.authentication import AuthenticationRepositoryNone
+from service.core.security.password_manager import PasswordManagerNone
 
 repository = AuthenticationRepositoryNone()
+password_manager = PasswordManagerNone()
 
 
 def test_sign_up_use_case_check_if_email_is_available():
     entity = SignUpEmailEntity(email='lucas@domain.com')
-    use_case = SignUpUseCase(repository=repository, email_entity=entity)
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
 
-    assert use_case.check_if_email_is_available() is False
+    assert use_case.check_if_email_is_available(email_entity=entity) is False
 
 
 def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
     sign_up_entity = SignUpEntity(**sign_up_entity_dict)
-    use_case = SignUpUseCase(repository=repository, entity=sign_up_entity)
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
 
-    serialized_user = use_case.serialize()
+    serialized_user: UserEntity = use_case.serialize(entity=sign_up_entity)
 
     assert serialized_user.user_id is None
     assert f'{serialized_user.first_name} {serialized_user.last_name}' == sign_up_entity.full_name
@@ -33,9 +33,9 @@ def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
 
 def test_sign_up_use_case_handler(sign_up_entity_dict: Dict):
     entity = SignUpEntity(**sign_up_entity_dict)
-    use_case = SignUpUseCase(repository=repository, entity=entity)
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
 
-    registered_user = use_case.handler()
+    registered_user = use_case.handler(entity=entity)
 
     assert registered_user['user_id'] == 1
     assert registered_user['email'] == entity.email
