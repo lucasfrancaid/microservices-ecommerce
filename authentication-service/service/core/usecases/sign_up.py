@@ -40,9 +40,6 @@ class SignUpUseCase:
 
     def user_register(self, user_entity: UserEntity) -> UserEntity:
         registered_user = self.repository.create(entity=user_entity)
-        # Mock return
-        registered_user = user_entity
-        registered_user.user_id = 1
         return registered_user
 
     def send_email(self, user_entity: UserEntity) -> None:

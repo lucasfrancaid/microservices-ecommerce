@@ -27,7 +27,7 @@ class AuthenticationRepositoryNone(AuthenticationRepository):
 
     @staticmethod
     def create(entity: UserEntity = None):
-        pass
+        return entity or None
 
     @staticmethod
     def get(user_id: Optional[int] = None, email: Optional[str] = None):
