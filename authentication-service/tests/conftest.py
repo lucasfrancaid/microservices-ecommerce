@@ -4,6 +4,28 @@ import pytest
 
 
 @pytest.fixture
+def email_configuration_entity_dict() -> Dict:
+    email_configuration = {
+        'host': '127.0.0.1',
+        'port': 25,
+        'username': 'root',
+        'password': 'toor',
+    }
+    return email_configuration
+
+
+@pytest.fixture
+def send_email_entity_dict() -> Dict:
+    send_email = {
+        'subject': 'Send Email Test',
+        'email_from': 'from@root.com',
+        'email_to': ['to@root.com'],
+        'body': 'A simple email text',
+    }
+    return send_email
+
+
+@pytest.fixture
 def sign_up_entity_dict() -> Dict:
     sign_up = {
         'full_name': 'Lucas França',
