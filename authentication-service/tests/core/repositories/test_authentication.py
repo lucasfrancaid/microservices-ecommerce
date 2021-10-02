@@ -14,7 +14,7 @@ def test_authentication_repository_abstract_class():
         AuthenticationRepository.get()
 
     with pytest.raises(NotImplementedError):
-        AuthenticationRepository.update(user_id=None)
+        AuthenticationRepository.update(user_id=None, entity=None)
 
     with pytest.raises(NotImplementedError):
         AuthenticationRepository.delete(user_id=None)
