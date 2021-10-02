@@ -14,7 +14,7 @@ def test_sign_up_email_entity():
     assert sign_up_email_entity.email == email
 
 
-def test_sign_up_email_entity_invalid_email_should_raise_validation_error(sign_up_entity_dict: Dict):
+def test_sign_up_email_entity_invalid_email_should_raise_validation_error():
     email = 'luc@s@entity.com.br'
 
     with pytest.raises(ValidationError) as exc:
@@ -94,11 +94,7 @@ def test_sign_up_confirmation_entity_is_sign_up_email_entity_subclass():
     assert issubclass(SignUpConfirmationEntity, SignUpEmailEntity)
 
 
-def test_sign_up_confirmation_entity():
-    sign_up_confirmation_entity_dict = {
-        'email': 'lucas@entity.com.br',
-        'confirmation_code': 123
-    }
+def test_sign_up_confirmation_entity(sign_up_confirmation_entity_dict):
     sign_up_confirmation_entity = SignUpConfirmationEntity(**sign_up_confirmation_entity_dict)
 
     assert sign_up_confirmation_entity.dict() == sign_up_confirmation_entity_dict

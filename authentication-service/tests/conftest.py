@@ -37,6 +37,15 @@ def sign_up_entity_dict() -> Dict:
 
 
 @pytest.fixture
+def sign_up_confirmation_entity_dict() -> Dict:
+    sign_up_confirmation = {
+        'email': 'lucas@entity.com.br',
+        'confirmation_code': 123
+    }
+    return sign_up_confirmation
+
+
+@pytest.fixture
 def user_entity_dict() -> Dict:
     user = {
         'first_name': 'Lucas',
