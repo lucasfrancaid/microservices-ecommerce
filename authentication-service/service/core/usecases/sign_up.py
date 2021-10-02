@@ -1,7 +1,9 @@
 from typing import Dict
 
-from service.core.entities.user import UserEntity
+from service.core.entities.email import SendEmailEntity
 from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity
+from service.core.entities.user import UserEntity
+from service.core.providers.email import EmailProvider
 from service.core.repositories.authentication import AuthenticationRepository
 from service.core.security.password_manager import PasswordManager
 
@@ -12,9 +14,11 @@ class SignUpUseCase:
         self,
         repository: AuthenticationRepository,
         password_manager: PasswordManager,
+        email_provider: EmailProvider,
     ) -> None:
         self.repository: AuthenticationRepository = repository
         self.password_manager: PasswordManager = password_manager
+        self.email_provider: EmailProvider = email_provider
 
     def check_if_email_is_available(self, email_entity: SignUpEmailEntity) -> bool:
         user = self.repository.get(email=email_entity)
@@ -43,4 +47,10 @@ class SignUpUseCase:
         return registered_user
 
     def send_email(self, user_entity: UserEntity) -> None:
-        print('--> Email was sent!')
+        send_email_entity = SendEmailEntity(
+            subject='Your new account',
+            email_from='from_root@root.com',
+            email_to=[user_entity.email],
+            body='Your new account'
+        )
+        self.email_provider.send(email_entity=send_email_entity)

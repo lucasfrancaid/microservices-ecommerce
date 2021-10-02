@@ -2,24 +2,34 @@ from typing import Dict
 
 from service.core.entities.user import UserEntity
 from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity
-from service.core.usecases.sign_up import SignUpUseCase
+from service.core.providers.email import EmailProviderNone
 from service.core.repositories.authentication import AuthenticationRepositoryNone
 from service.core.security.password_manager import PasswordManagerNone
+from service.core.usecases.sign_up import SignUpUseCase
 
 repository = AuthenticationRepositoryNone()
 password_manager = PasswordManagerNone()
+email_provider = EmailProviderNone()
 
 
 def test_sign_up_use_case_check_if_email_is_available():
     entity = SignUpEmailEntity(email='lucas@domain.com')
-    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
+    use_case = SignUpUseCase(
+        repository=repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
 
     assert use_case.check_if_email_is_available(email_entity=entity) is False
 
 
 def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
     sign_up_entity = SignUpEntity(**sign_up_entity_dict)
-    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
+    use_case = SignUpUseCase(
+        repository=repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
 
     serialized_user: UserEntity = use_case.serialize(entity=sign_up_entity)
 
@@ -33,7 +43,11 @@ def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
 
 def test_sign_up_use_case_user_register(user_entity_dict: Dict):
     user_entity = UserEntity(**user_entity_dict)
-    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
+    use_case = SignUpUseCase(
+        repository=repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
 
     registered_user = use_case.user_register(user_entity=user_entity)
 
@@ -44,7 +58,11 @@ def test_sign_up_use_case_user_register(user_entity_dict: Dict):
 
 def test_sign_up_use_case_handler(sign_up_entity_dict: Dict):
     sign_up_entity = SignUpEntity(**sign_up_entity_dict)
-    use_case = SignUpUseCase(repository=repository, password_manager=password_manager)
+    use_case = SignUpUseCase(
+        repository=repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
 
     registered_user = use_case.handler(entity=sign_up_entity)
 
