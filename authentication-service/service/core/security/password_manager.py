@@ -5,7 +5,7 @@ from typing import Union
 class PasswordManager(ABC):
 
     @abstractmethod
-    def __init__(salt: Union[bytes, str] = None):
+    def __init__(salt: Union[bytes, str] = None) -> None:
         raise NotImplementedError
 
     @abstractmethod
@@ -19,7 +19,7 @@ class PasswordManager(ABC):
 
 class PasswordManagerNone(PasswordManager):
 
-    def __init__(self, salt: Union[bytes, str] = None):
+    def __init__(self, salt: Union[bytes, str] = None) -> None:
         self.salt: Union[bytes, str] = salt
 
     def hash(self, password: str = None) -> Union[bytes, None]:

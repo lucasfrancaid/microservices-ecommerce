@@ -7,7 +7,7 @@ from service.core.entities.email import EmailConfigurationEntity, SendEmailEntit
 class EmailProvider(ABC):
 
     @abstractmethod
-    def __init__(configuration: EmailConfigurationEntity):
+    def __init__(configuration: EmailConfigurationEntity) -> None:
         raise NotImplementedError
 
     @abstractmethod
@@ -17,7 +17,7 @@ class EmailProvider(ABC):
 
 class EmailProviderNone(EmailProvider):
 
-    def __init__(self, configuration: EmailConfigurationEntity = None):
+    def __init__(self, configuration: EmailConfigurationEntity = None) -> None:
         self.configuration: EmailConfigurationEntity = configuration
     
     def send(self, email_entity: SendEmailEntity = None) -> Any:
