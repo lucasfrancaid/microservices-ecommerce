@@ -1,7 +1,9 @@
 from typing import Dict
 
+import pytest
+
 from service.core.entities.user import UserEntity
-from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity
+from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity, SignUpConfirmationEntity
 from service.core.providers.email import EmailProviderNone
 from service.core.repositories.authentication import AuthenticationRepositoryNone
 from service.core.security.password_manager import PasswordManagerNone
@@ -84,3 +86,32 @@ def test_sign_up_use_case_handler(sign_up_entity_dict: Dict):
     assert f'{registered_user["first_name"]} {registered_user["last_name"]}' == sign_up_entity.full_name
     assert registered_user['is_active'] is False
     assert registered_user['confirmation_code'] is None
+
+
+def test_sign_up_use_case_confirmation_account():
+    entity = SignUpConfirmationEntity(email='lucas@domain.com', confirmation_code=123)
+    mock_repository = AuthenticationRepositoryNone(mock_all=True)
+    use_case = SignUpUseCase(
+        repository=mock_repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
+
+    confirmed_user = use_case.confirmation_account(confirmation_entity=entity)
+
+    assert confirmed_user.is_active is True
+
+
+def test_sign_up_use_case_confirmation_account_invalid_confirmation_code_must_raise_error():
+    entity = SignUpConfirmationEntity(email='lucas@domain.com', confirmation_code=456)
+    mock_repository = AuthenticationRepositoryNone(mock_all=True)
+    use_case = SignUpUseCase(
+        repository=mock_repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
+
+    with pytest.raises(ValueError) as exc:
+        use_case.confirmation_account(confirmation_entity=entity)
+
+    assert str(exc.value) == 'incorrect confirmation code'

@@ -1,7 +1,7 @@
 from typing import Dict
 
 from service.core.entities.email import SendEmailEntity
-from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity
+from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity, SignUpConfirmationEntity
 from service.core.entities.user import UserEntity
 from service.core.providers.email import EmailProvider
 from service.core.repositories.authentication import AuthenticationRepository
@@ -21,7 +21,7 @@ class SignUpUseCase:
         self.email_provider: EmailProvider = email_provider
 
     def check_if_email_is_available(self, email_entity: SignUpEmailEntity) -> bool:
-        user = self.repository.get(email=email_entity)
+        user = self.repository.get(email=email_entity.email)
         return True if user else False
 
     def handler(self, entity: SignUpEntity) -> Dict:
@@ -54,3 +54,13 @@ class SignUpUseCase:
             body='Your new account'
         )
         self.email_provider.send(email_entity=send_email_entity)
+
+    def confirmation_account(self, confirmation_entity: SignUpConfirmationEntity) -> UserEntity:
+        user = self.repository.get(email=confirmation_entity.email)
+
+        if not user.confirmation_code == confirmation_entity.confirmation_code:
+            raise ValueError('Confirmation code must be equal')
+        
+        user.is_active = True
+        updated_user = self.repository.update(user)
+        return updated_user
