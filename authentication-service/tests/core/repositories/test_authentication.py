@@ -5,6 +5,9 @@ from service.core.repositories.authentication import AuthenticationRepository, A
 
 def test_authentication_repository_abstract_class():
     with pytest.raises(NotImplementedError):
+        AuthenticationRepository.__init__(configuration=None)
+
+    with pytest.raises(NotImplementedError):
         AuthenticationRepository.create(entity=None)
 
     with pytest.raises(NotImplementedError):

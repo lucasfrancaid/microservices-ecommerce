@@ -2,9 +2,14 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from service.core.entities.user import UserEntity
+from service.core.entities.repository import RepositoryConfigurationEntity
 
 
 class AuthenticationRepository(ABC):
+
+    @abstractmethod
+    def __init__(configuration: RepositoryConfigurationEntity):
+        raise NotImplementedError
 
     @abstractmethod
     def create(entity: UserEntity):
@@ -25,18 +30,17 @@ class AuthenticationRepository(ABC):
 
 class AuthenticationRepositoryNone(AuthenticationRepository):
 
-    @staticmethod
-    def create(entity: UserEntity = None):
-        return entity or None
+    def __init__(self, configuration: RepositoryConfigurationEntity = None):
+        self.configuration: RepositoryConfigurationEntity = configuration
 
-    @staticmethod
-    def get(user_id: Optional[int] = None, email: Optional[str] = None):
+    def create(self, entity: UserEntity = None):
+        return entity 
+
+    def get(self, user_id: Optional[int] = None, email: Optional[str] = None):
         pass
 
-    @staticmethod
-    def update(user_id: int = None):
+    def update(self, user_id: int = None):
         pass
 
-    @staticmethod
-    def delete(user_id: int = None):
+    def delete(self, user_id: int = None):
         pass
