@@ -59,8 +59,8 @@ class SignUpUseCase:
         user = self.repository.get(email=confirmation_entity.email)
 
         if not user.confirmation_code == confirmation_entity.confirmation_code:
-            raise ValueError('Confirmation code must be equal')
+            raise ValueError('incorrect confirmation code')
         
         user.is_active = True
-        updated_user = self.repository.update(user)
+        updated_user = self.repository.update(user_id=user.user_id, entity=user)
         return updated_user
