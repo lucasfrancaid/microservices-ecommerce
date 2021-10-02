@@ -56,6 +56,17 @@ def test_sign_up_use_case_user_register(user_entity_dict: Dict):
     assert isinstance(registered_user.hash_password, bytes)
 
 
+def test_sign_up_use_case_send_email(user_entity_dict: Dict):
+    user_entity = UserEntity(**user_entity_dict)
+    use_case = SignUpUseCase(
+        repository=repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
+
+    assert use_case.send_email(user_entity=user_entity) is None
+
+
 def test_sign_up_use_case_handler(sign_up_entity_dict: Dict):
     sign_up_entity = SignUpEntity(**sign_up_entity_dict)
     use_case = SignUpUseCase(
