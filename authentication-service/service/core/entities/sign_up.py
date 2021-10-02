@@ -21,3 +21,7 @@ class SignUpEntity(SignUpEmailEntity):
         if 'password' in values and v != values['password']:
             raise ValueError('Password and Password Confirmation must be equal')
         return v
+
+
+class SignUpConfirmationEntity(SignUpEmailEntity):
+    confirmation_code: int

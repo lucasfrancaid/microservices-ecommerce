@@ -4,26 +4,37 @@ from typing import Dict
 import pytest
 from pydantic import ValidationError
 
-from service.core.entities.sign_up import SignUpEntity
+from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity, SignUpConfirmationEntity
 
 
-def test_sign_up_entity_from_dict(sign_up_entity_dict: Dict):
-    sign_up_entity = SignUpEntity(**sign_up_entity_dict)
+def test_sign_up_email_entity():
+    email = 'lucas@entity.com.br'
+    sign_up_email_entity = SignUpEmailEntity(email=email)
 
-    assert sign_up_entity.dict() == sign_up_entity_dict
+    assert sign_up_email_entity.email == email
 
 
-def test_sign_up_entity_invalid_email_should_raise_validation_error(sign_up_entity_dict: Dict):
-    sign_up_entity_dict['email'] = 'luc@s@entity.com.br'
+def test_sign_up_email_entity_invalid_email_should_raise_validation_error(sign_up_entity_dict: Dict):
+    email = 'luc@s@entity.com.br'
 
     with pytest.raises(ValidationError) as exc:
-        SignUpEntity(**sign_up_entity_dict)
+        SignUpEmailEntity(email=email)
 
     error = literal_eval(exc.value.json())[0]
 
     assert error['loc'][0] == 'email'
     assert error['msg'] == 'value is not a valid email address'
     assert error['type'] == 'value_error.email'
+
+
+def test_sign_up_entity_is_sign_up_email_entity_subclass():
+    assert issubclass(SignUpEntity, SignUpEmailEntity)
+
+
+def test_sign_up_entity_from_dict(sign_up_entity_dict: Dict):
+    sign_up_entity = SignUpEntity(**sign_up_entity_dict)
+
+    assert sign_up_entity.dict() == sign_up_entity_dict
 
 
 def test_sign_up_entity_full_name_must_be_more_than_one_word(sign_up_entity_dict: Dict):
@@ -77,3 +88,17 @@ def test_sign_up_entity_password_and_password_confirmation_must_be_equal(sign_up
     assert error['loc'][0] == 'password_confirmation'
     assert error['msg'] == 'Password and Password Confirmation must be equal'
     assert error['type'] == 'value_error'
+
+
+def test_sign_up_confirmation_entity_is_sign_up_email_entity_subclass():
+    assert issubclass(SignUpConfirmationEntity, SignUpEmailEntity)
+
+
+def test_sign_up_confirmation_entity():
+    sign_up_confirmation_entity_dict = {
+        'email': 'lucas@entity.com.br',
+        'confirmation_code': 123
+    }
+    sign_up_confirmation_entity = SignUpConfirmationEntity(**sign_up_confirmation_entity_dict)
+
+    assert sign_up_confirmation_entity.dict() == sign_up_confirmation_entity_dict
