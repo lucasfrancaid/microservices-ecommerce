@@ -1,5 +1,6 @@
 from typing import Dict
 
+from service.core.usecases import UseCase
 from service.core.entities.email import SendEmailEntity
 from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity, SignUpConfirmationEntity
 from service.core.entities.user import UserEntity
@@ -8,7 +9,7 @@ from service.core.repositories.authentication import AuthenticationRepository
 from service.core.security.password_manager import PasswordManager
 
 
-class SignUpUseCase:
+class SignUpUseCase(UseCase):
 
     def __init__(
         self,
@@ -20,15 +21,12 @@ class SignUpUseCase:
         self.password_manager: PasswordManager = password_manager
         self.email_provider: EmailProvider = email_provider
 
-    def check_if_email_is_available(self, email_entity: SignUpEmailEntity) -> bool:
-        user = self.repository.get(email=email_entity.email)
-        return True if user else False
-
     def handler(self, entity: SignUpEntity) -> Dict:
         serialized_user = self.serialize(entity=entity)
         user_entity = self.user_register(user_entity=serialized_user)
         self.send_email(user_entity)
-        return user_entity.dict()
+        deserialized_user = self.deserialize(user_entity=user_entity)
+        return deserialized_user
 
     def serialize(self, entity: SignUpEntity) -> UserEntity:
         delimiter = ' '
@@ -41,6 +39,13 @@ class SignUpUseCase:
             hash_password=hash_password
         )
         return user_entity
+
+    def deserialize(self, user_entity: UserEntity):
+        return user_entity.dict()
+
+    def check_if_email_is_available(self, email_entity: SignUpEmailEntity) -> bool:
+        user = self.repository.get(email=email_entity.email)
+        return True if user else False
 
     def user_register(self, user_entity: UserEntity) -> UserEntity:
         registered_user = self.repository.create(entity=user_entity)
@@ -60,7 +65,7 @@ class SignUpUseCase:
 
         if not user.confirmation_code == confirmation_entity.confirmation_code:
             raise ValueError('incorrect confirmation code')
-        
+
         user.is_active = True
         updated_user = self.repository.update(user_id=user.user_id, entity=user)
         return updated_user

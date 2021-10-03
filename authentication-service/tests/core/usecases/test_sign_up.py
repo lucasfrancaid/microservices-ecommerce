@@ -14,17 +14,6 @@ password_manager = PasswordManagerNone()
 email_provider = EmailProviderNone()
 
 
-def test_sign_up_use_case_check_if_email_is_available():
-    entity = SignUpEmailEntity(email='lucas@domain.com')
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_provider=email_provider
-    )
-
-    assert use_case.check_if_email_is_available(email_entity=entity) is False
-
-
 def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
     sign_up_entity = SignUpEntity(**sign_up_entity_dict)
     use_case = SignUpUseCase(
@@ -41,6 +30,31 @@ def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
     assert serialized_user.hash_password == sign_up_entity.password.encode()
     assert serialized_user.is_active is False
     assert serialized_user.confirmation_code is None
+
+
+def test_sign_up_use_case_deserialize(user_entity_dict: Dict):
+    user_entity = UserEntity(**user_entity_dict)
+    use_case = SignUpUseCase(
+        repository=repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
+
+    deserialized_user = use_case.deserialize(user_entity=user_entity)
+
+    assert isinstance(deserialized_user, dict)
+    assert deserialized_user == user_entity.dict()
+
+
+def test_sign_up_use_case_check_if_email_is_available():
+    entity = SignUpEmailEntity(email='lucas@domain.com')
+    use_case = SignUpUseCase(
+        repository=repository,
+        password_manager=password_manager,
+        email_provider=email_provider
+    )
+
+    assert use_case.check_if_email_is_available(email_entity=entity) is False
 
 
 def test_sign_up_use_case_user_register(user_entity_dict: Dict):
