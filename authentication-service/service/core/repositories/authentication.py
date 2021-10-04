@@ -12,7 +12,7 @@ class AuthenticationRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(entity: UserEntity) -> Union[UserEntity, None]:
+    def create(user_entity: UserEntity) -> Union[UserEntity, None]:
         raise NotImplementedError
 
     @abstractmethod
@@ -20,7 +20,7 @@ class AuthenticationRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def update(user_id: int, entity: UserEntity) -> Union[UserEntity, None]:
+    def update(user_id: int, user_entity: UserEntity) -> Union[UserEntity, None]:
         raise NotImplementedError
 
     @abstractmethod
@@ -41,15 +41,15 @@ class AuthenticationRepositoryNone(AuthenticationRepository):
         self.configuration: RepositoryConfigurationEntity = configuration
         self.mock_all: bool = mock_all
 
-    def create(self, entity: UserEntity = None, mock: bool = False) -> Union[UserEntity, None]:
-        return self.user_entity_mock if mock or self.mock_all else entity
+    def create(self, user_entity: UserEntity = None, mock: bool = False) -> Union[UserEntity, None]:
+        return self.user_entity_mock if mock or self.mock_all else user_entity
 
     def get(self, user_id: Optional[int] = None, email: Optional[str] = None, mock: bool = False) -> Union[UserEntity, None]:
         return self.user_entity_mock if mock or self.mock_all else None
 
 
-    def update(self, user_id: int = None, entity: UserEntity = None, mock: bool = False) -> Union[UserEntity, None]:
-        return self.user_entity_mock if mock or self.mock_all else entity
+    def update(self, user_id: int = None, user_entity: UserEntity = None, mock: bool = False) -> Union[UserEntity, None]:
+        return self.user_entity_mock if mock or self.mock_all else user_entity
 
     def delete(self, user_id: int = None) -> bool:
         pass
