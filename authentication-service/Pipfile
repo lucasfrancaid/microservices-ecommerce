@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 pydantic = "*"
 email-validator = "*"
+bcrypt = "*"
+fastapi = "*"
+uvicorn = "*"
+requests = "*"
 
 [requires]
 python_version = "3.9"
@@ -13,3 +17,4 @@ python_version = "3.9"
 [dev-packages]
 pytest = "*"
 coverage = "*"
+yapf = "*"
