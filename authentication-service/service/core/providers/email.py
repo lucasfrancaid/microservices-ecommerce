@@ -15,7 +15,7 @@ class EmailProvider(ABC):
         raise NotImplementedError
 
 
-class EmailProviderNone(EmailProvider):
+class EmailProviderFake(EmailProvider):
 
     def __init__(self, configuration: EmailConfigurationEntity = None) -> None:
         self.configuration: EmailConfigurationEntity = configuration

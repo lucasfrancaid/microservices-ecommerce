@@ -17,7 +17,7 @@ class PasswordManager(ABC):
         raise NotImplementedError
 
 
-class PasswordManagerNone(PasswordManager):
+class PasswordManagerFake(PasswordManager):
 
     def __init__(self, salt: Union[bytes, str] = None) -> None:
         self.salt: Union[bytes, str] = salt

@@ -1,6 +1,6 @@
 import pytest
 
-from service.core.security.password_manager import PasswordManager, PasswordManagerNone
+from service.core.security.password_manager import PasswordManager, PasswordManagerFake
 
 
 def test_password_manager_abstract_class():
@@ -14,8 +14,8 @@ def test_password_manager_abstract_class():
         PasswordManager.check(password=None, hashed_password=None)
 
 
-def test_password_manager_none():
-    manager = PasswordManagerNone(salt=None)
+def test_password_manager_fake():
+    manager = PasswordManagerFake(salt=None)
 
     assert manager.salt is None
     assert manager.hash(password=None) is None

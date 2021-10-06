@@ -4,14 +4,14 @@ import pytest
 
 from service.core.entities.user import UserEntity
 from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity, SignUpConfirmationAccountEntity
-from service.core.providers.email import EmailProviderNone
+from service.core.providers.email import EmailProviderFake
 from service.core.repositories.authentication import AuthenticationRepositoryInMemory
-from service.core.security.password_manager import PasswordManagerNone
+from service.core.security.password_manager import PasswordManagerFake
 from service.core.usecases.sign_up import SignUpConfirmationAccountUseCase, SignUpUseCase
 
 repository = AuthenticationRepositoryInMemory()
-password_manager = PasswordManagerNone()
-email_provider = EmailProviderNone()
+password_manager = PasswordManagerFake()
+email_provider = EmailProviderFake()
 
 
 def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
