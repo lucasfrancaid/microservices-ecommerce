@@ -33,3 +33,9 @@ def test_bcrypt_password_manager_hash_and_check_different_password_must_be_false
 
     hash_password = password_manager.hash(password=pytest.mock_password)
     assert password_manager.check(password=wrong_password, hash_password=hash_password) is False
+
+
+def test_bcrypt_password_manager_check_staticmethod():
+    hash_password = PasswordManagerBcrypt(salt=pytest.mock_bcrypt_salt).hash(password=pytest.mock_password)
+
+    assert PasswordManagerBcrypt.check(password=pytest.mock_password, hash_password=hash_password) is True
