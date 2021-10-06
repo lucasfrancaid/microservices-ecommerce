@@ -29,7 +29,7 @@ def send_email_entity_dict() -> Dict:
 def sign_up_entity_dict() -> Dict:
     sign_up = {
         'full_name': 'Lucas França',
-        'email': 'lucas@domain.com',
+        'email': 'lucas@entity.com',
         'password': 'MyPass123',
         'password_confirmation': 'MyPass123',
     }
@@ -37,7 +37,7 @@ def sign_up_entity_dict() -> Dict:
 
 
 @pytest.fixture
-def sign_up_confirmation_entity_dict() -> Dict:
+def sign_up_confirmation_account_entity_dict() -> Dict:
     sign_up_confirmation = {
         'email': 'lucas@entity.com.br',
         'confirmation_code': 123
@@ -50,7 +50,7 @@ def user_entity_dict() -> Dict:
     user = {
         'first_name': 'Lucas',
         'last_name': 'França',
-        'email': 'lucas@domain.com',
+        'email': 'lucas@entity.com',
         'hash_password': 'MyPass123'.encode(),
     }
     return user

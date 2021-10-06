@@ -28,11 +28,13 @@ class AuthenticationRepository(ABC):
         raise NotImplementedError
 
 
-class AuthenticationRepositoryNone(AuthenticationRepository):
+class AuthenticationRepositoryInMemory(AuthenticationRepository):
+    users_in_memory = []
     user_entity_mock = UserEntity(
+        user_id=1,
         first_name='Lucas',
         last_name='França',
-        email='lucas@domain.com',
+        email='lucas@entity.com',
         hash_password='MyPass123'.encode(),
         confirmation_code=123,
     )
@@ -47,9 +49,8 @@ class AuthenticationRepositoryNone(AuthenticationRepository):
     def get(self, user_id: Optional[int] = None, email: Optional[str] = None, mock: bool = False) -> Union[UserEntity, None]:
         return self.user_entity_mock if mock or self.mock_all else None
 
-
-    def update(self, user_id: int = None, user_entity: UserEntity = None, mock: bool = False) -> Union[UserEntity, None]:
-        return self.user_entity_mock if mock or self.mock_all else user_entity
+    def update(self, user_id: int = None, user_entity: UserEntity = None) -> Union[UserEntity, None]:
+        return user_entity
 
     def delete(self, user_id: int = None) -> bool:
         pass

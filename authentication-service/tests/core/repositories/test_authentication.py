@@ -1,6 +1,6 @@
 import pytest
 
-from service.core.repositories.authentication import AuthenticationRepository, AuthenticationRepositoryNone
+from service.core.repositories.authentication import AuthenticationRepository, AuthenticationRepositoryInMemory
 
 
 def test_authentication_repository_abstract_class():
@@ -21,7 +21,7 @@ def test_authentication_repository_abstract_class():
 
 
 def test_authentication_repository_none():
-    repository = AuthenticationRepositoryNone()
+    repository = AuthenticationRepositoryInMemory()
 
     assert repository.create() is None
     assert repository.get() is None

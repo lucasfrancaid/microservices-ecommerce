@@ -4,7 +4,7 @@ from typing import Dict
 import pytest
 from pydantic import ValidationError
 
-from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity, SignUpConfirmationEntity
+from service.core.entities.sign_up import SignUpEmailEntity, SignUpEntity, SignUpConfirmationAccountEntity
 
 
 def test_sign_up_email_entity():
@@ -90,11 +90,11 @@ def test_sign_up_entity_password_and_password_confirmation_must_be_equal(sign_up
     assert error['type'] == 'value_error'
 
 
-def test_sign_up_confirmation_entity_is_sign_up_email_entity_subclass():
-    assert issubclass(SignUpConfirmationEntity, SignUpEmailEntity)
+def test_sign_up_confirmation_account_entity_is_sign_up_email_entity_subclass():
+    assert issubclass(SignUpConfirmationAccountEntity, SignUpEmailEntity)
 
 
-def test_sign_up_confirmation_entity(sign_up_confirmation_entity_dict):
-    sign_up_confirmation_entity = SignUpConfirmationEntity(**sign_up_confirmation_entity_dict)
+def test_sign_up_confirmation_account_entity(sign_up_confirmation_account_entity_dict):
+    sign_up_confirmation_account_entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
 
-    assert sign_up_confirmation_entity.dict() == sign_up_confirmation_entity_dict
+    assert sign_up_confirmation_account_entity.dict() == sign_up_confirmation_account_entity_dict

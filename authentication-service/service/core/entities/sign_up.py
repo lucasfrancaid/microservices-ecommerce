@@ -23,5 +23,5 @@ class SignUpEntity(SignUpEmailEntity):
         return v
 
 
-class SignUpConfirmationEntity(SignUpEmailEntity):
+class SignUpConfirmationAccountEntity(SignUpEmailEntity):
     confirmation_code: int
