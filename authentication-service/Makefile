@@ -4,12 +4,16 @@ run:
 	@echo '--> Starting Authentication Service'
 	@uvicorn service.adapters.fastapi.main:app --host 0.0.0.0 --port 8000
 
+run_fastapi:
+	@echo '--> Starting Authentication Service'
+	@uvicorn src.infrastructure.http.fastapi.main:app --reload --host 0.0.0.0 --port 8000
+
 test: dev_packages
 	@echo '--> Running Tests for Authentication Service'
 	@python -m pytest $(args)
 
 coverage:
-	@coverage run --source service -m pytest
+	@coverage run --source src -m pytest
 	@coverage report -m
 	@coverage html
 
