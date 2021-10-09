@@ -4,25 +4,21 @@ from abc import ABC, abstractmethod
 class Controller(ABC):
 
     @abstractmethod
-    def __init__(*args, **kwargs):
+    def get(self):
         raise NotImplementedError
 
     @abstractmethod
-    def get(*args, **kwargs):
+    def post(self):
         raise NotImplementedError
 
     @abstractmethod
-    def post(*args, **kwargs):
+    def put(self):
         raise NotImplementedError
 
     @abstractmethod
-    def put(*args, **kwargs):
+    def patch(self):
         raise NotImplementedError
 
     @abstractmethod
-    def patch(*args, **kwargs):
-        raise NotImplementedError
-
-    @abstractmethod
-    def delete(*args, **kwargs):
+    def delete(self):
         raise NotImplementedError

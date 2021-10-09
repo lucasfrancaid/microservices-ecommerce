@@ -9,22 +9,19 @@ from src.application.patterns.singleton import Singleton
 
 class AuthenticationRepository(Repository):
 
-    def __init__(configuration: RepositoryConfigurationEntity) -> None:
+    def all(self, page: int = 1, limit: int = 20) -> List[Optional[UserEntity]]:
         raise NotImplementedError
 
-    def all(page: int = 1, limit: int = 20) -> List[Optional[UserEntity]]:
+    def get(self, user_id: Optional[int] = None, email: Optional[str] = None) -> Union[UserEntity, None]:
         raise NotImplementedError
 
-    def get(user_id: Optional[int] = None, email: Optional[str] = None) -> Union[UserEntity, None]:
+    def create(self, user_entity: UserEntity = None) -> Union[UserEntity, None]:
         raise NotImplementedError
 
-    def create(user_entity: UserEntity) -> Union[UserEntity, None]:
+    def update(self, user_id: int = None, user_entity: UserEntity = None) -> Union[UserEntity, None]:
         raise NotImplementedError
 
-    def update(user_id: int, user_entity: UserEntity) -> Union[UserEntity, None]:
-        raise NotImplementedError
-
-    def delete(user_id: int) -> bool:
+    def delete(self, user_id: int = None) -> bool:
         raise NotImplementedError
 
 

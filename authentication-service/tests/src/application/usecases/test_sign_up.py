@@ -10,7 +10,8 @@ from src.application.ports.repositories.authentication import AuthenticationRepo
 from src.application.services.email import EmailServiceFake
 from src.application.security.password_manager import PasswordManagerFake
 from src.application.usecases.sign_up import SignUpConfirmationAccountUseCase, SignUpUseCase
-from src.application.usecases.exceptions import SignUpUseCaseException, SignUpConfirmationAccountUseCaseException, SignUpConfirmationAccountUseCaseValidationError
+from src.application.usecases.exceptions import SignUpUseCaseException, SignUpConfirmationAccountUseCaseException, \
+    SignUpConfirmationAccountUseCaseValidationError
 
 repository = AuthenticationRepositoryInMemory()
 password_manager = PasswordManagerFake()
@@ -118,7 +119,6 @@ def test_sign_up_use_case_handler_user_email_is_active_must_raise_exception(sign
         email_service=email_service
     )
 
-
     with pytest.raises(SignUpUseCaseException) as exc:
         use_case.handler(entity=sign_up_entity)
 
@@ -148,7 +148,8 @@ def test_sign_up_confirmation_account_use_case_deserialize(user_entity_dict: Dic
     assert deserialized_user == user_entity.__dict__
 
 
-def test_sign_up_confirmation_account_use_case_handler(sign_up_confirmation_account_entity_dict: Dict, user_entity_dict: Dict):
+def test_sign_up_confirmation_account_use_case_handler(sign_up_confirmation_account_entity_dict: Dict,
+                                                       user_entity_dict: Dict):
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
     user_entity = UserEntity(**user_entity_dict)
     use_case = SignUpConfirmationAccountUseCase(
@@ -158,7 +159,7 @@ def test_sign_up_confirmation_account_use_case_handler(sign_up_confirmation_acco
 
     user_entity.user_id = 999
     user_entity.email = entity.email
-    user_entity.is_active = True
+    user_entity.is_active = False
     user_entity.confirmation_code = entity.confirmation_code
     repository.storage.data.append(user_entity)
 
@@ -167,9 +168,25 @@ def test_sign_up_confirmation_account_use_case_handler(sign_up_confirmation_acco
     assert confirmed_user['is_active'] is True
 
 
+def test_sign_up_confirmation_account_use_case_handler_non_existent_user_must_raise_exception(
+        sign_up_confirmation_account_entity_dict: Dict
+):
+    use_case = SignUpConfirmationAccountUseCase(
+        repository=repository,
+        email_service=email_service
+    )
+    entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
+    entity.email = 'non.existent@entity.com'
+
+    with pytest.raises(SignUpConfirmationAccountUseCaseException) as exc:
+        use_case.handler(confirmation_entity=entity)
+
+    assert str(exc.value) == 'User not found'
+
+
 def test_sign_up_confirmation_account_use_case_handler_invalid_confirmation_code_must_raise_exception(
         sign_up_confirmation_account_entity_dict: Dict
-    ):
+):
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
     entity.confirmation_code = 456
     use_case = SignUpConfirmationAccountUseCase(

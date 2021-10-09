@@ -15,7 +15,7 @@ class PasswordManagerBcrypt(PasswordManager):
         return hash_password
 
     @staticmethod
-    def check(password: str, hash_password: Union[bytes, str]) -> bool:
+    def check(password: str, hash_password: Union[bytes, str], **kwargs) -> bool:
         encoded_hash_password: bytes = hash_password if isinstance(hash_password, bytes) else hash_password.encode()
         correct_password = bcrypt.checkpw(password.encode(), encoded_hash_password)
         return correct_password

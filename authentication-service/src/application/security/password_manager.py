@@ -5,15 +5,11 @@ from typing import Union
 class PasswordManager(ABC):
 
     @abstractmethod
-    def __init__(salt: Union[bytes, str] = None) -> None:
+    def hash(self, password: str = None) -> bytes:
         raise NotImplementedError
 
     @abstractmethod
-    def hash(password: str) -> bytes:
-        raise NotImplementedError
-
-    @abstractmethod
-    def check(password: str, hashed_password: bytes) -> bool:
+    def check(self, password: str = None, hashed_password: bytes = None) -> bool:
         raise NotImplementedError
 
 

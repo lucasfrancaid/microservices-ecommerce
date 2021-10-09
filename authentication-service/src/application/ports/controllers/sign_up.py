@@ -8,17 +8,9 @@ from src.application.usecases.sign_up import SignUpUseCase, SignUpConfirmationAc
 
 class SignUpController(Controller):
 
-    def __init__(*args, **kwargs) -> None:
-        pass
-
-    def get(*args, **kwargs):
-        pass
-
     @staticmethod
-    def post(
-        repository: AuthenticationRepository, password_manager: PasswordManager,
-        email_service: EmailService, entity: SignUpEntity
-    ):
+    def post(repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService,
+             entity: SignUpEntity):
         use_case = SignUpUseCase(
             repository=repository,
             password_manager=password_manager,
@@ -28,10 +20,7 @@ class SignUpController(Controller):
         return response
 
     @staticmethod
-    def put(
-        repository: AuthenticationRepository, email_service: EmailService,
-        entity: SignUpConfirmationAccountEntity
-    ):
+    def put(repository: AuthenticationRepository, email_service: EmailService, entity: SignUpConfirmationAccountEntity):
         use_case = SignUpConfirmationAccountUseCase(
             repository=repository,
             email_service=email_service,
@@ -39,8 +28,11 @@ class SignUpController(Controller):
         response = use_case.handler(confirmation_entity=entity)
         return response
 
-    def patch(*args, **kwargs):
-        pass
+    def get(self):
+        raise NotImplementedError
 
-    def delete(*args, **kwargs):
-        pass
+    def patch(self):
+        raise NotImplementedError
+
+    def delete(self):
+        raise NotImplementedError

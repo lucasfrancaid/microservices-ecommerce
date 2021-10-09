@@ -1,14 +1,20 @@
 import bcrypt
 
-from src.core.application.ports.repositories.authentication import AuthenticationRepository, AuthenticationRepositoryInMemory
-from src.core.application.security.password_manager import PasswordManager
-from src.core.application.services.email import EmailService, EmailServiceFake
+from src.application.ports.repositories.authentication import AuthenticationRepository, \
+    AuthenticationRepositoryInMemory
+from src.application.security.password_manager import PasswordManager
+from src.application.services.email import EmailService, EmailServiceFake
 from src.infrastructure.security.bcrypt import PasswordManagerBcrypt
 
 
 class FactoryApplication:
 
-    def __init__(self, repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService) -> None:
+    def __init__(
+        self,
+        repository: AuthenticationRepository,
+        password_manager: PasswordManager,
+        email_service: EmailService
+    ) -> None:
         self.repository: AuthenticationRepository = repository
         self.password_manager: PasswordManager = password_manager
         self.email_service: EmailService = email_service

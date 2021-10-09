@@ -4,11 +4,13 @@ from src.application.interfaces.usecase import UseCase
 
 
 def test_use_case_abstract_class():
-    with pytest.raises(NotImplementedError):
-        UseCase.handler()
+    UseCase.__abstractmethods__ = set()
 
     with pytest.raises(NotImplementedError):
-        UseCase.serialize()
+        UseCase().handler()
 
     with pytest.raises(NotImplementedError):
-        UseCase.deserialize()
+        UseCase().serialize()
+
+    with pytest.raises(NotImplementedError):
+        UseCase().deserialize()

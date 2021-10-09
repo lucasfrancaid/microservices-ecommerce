@@ -4,19 +4,26 @@ from src.application.security.password_manager import PasswordManager, PasswordM
 
 
 def test_password_manager_abstract_class():
-    with pytest.raises(NotImplementedError):
-        PasswordManager.__init__(salt=None)
+    PasswordManager.__abstractmethods__ = set()
 
     with pytest.raises(NotImplementedError):
-        PasswordManager.hash(password=None)
+        PasswordManager().hash()
 
     with pytest.raises(NotImplementedError):
-        PasswordManager.check(password=None, hashed_password=None)
+        PasswordManager().check()
 
 
-def test_password_manager_fake():
-    manager = PasswordManagerFake(salt=None)
+def test_password_manager_fake_subclass():
+    assert issubclass(PasswordManagerFake, PasswordManager)
 
-    assert manager.salt is None
-    assert manager.hash(password=None) is None
-    assert manager.check(password=None, hashed_password=None) is None
+
+def test_password_manager_fake_init():
+    assert PasswordManagerFake().salt is None
+
+
+def test_password_manager_fake_hash():
+    assert PasswordManagerFake().hash(password=None) is None
+
+
+def test_password_manager_fake_check():
+    assert PasswordManagerFake().check(password=None, hashed_password=None) is None

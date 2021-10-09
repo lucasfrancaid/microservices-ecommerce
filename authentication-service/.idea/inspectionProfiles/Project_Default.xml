@@ -1,0 +1,79 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="ignoredPackages">
+        <value>
+          <list size="27">
+            <item index="0" class="java.lang.String" itemvalue="jellyfish" />
+            <item index="1" class="java.lang.String" itemvalue="psycopg2-binary" />
+            <item index="2" class="java.lang.String" itemvalue="requests" />
+            <item index="3" class="java.lang.String" itemvalue="drf-yasg" />
+            <item index="4" class="java.lang.String" itemvalue="redis" />
+            <item index="5" class="java.lang.String" itemvalue="flake8" />
+            <item index="6" class="java.lang.String" itemvalue="XlsxWriter" />
+            <item index="7" class="java.lang.String" itemvalue="celery" />
+            <item index="8" class="java.lang.String" itemvalue="djangorestframework-simplejwt" />
+            <item index="9" class="java.lang.String" itemvalue="workalendar" />
+            <item index="10" class="java.lang.String" itemvalue="djangorestframework" />
+            <item index="11" class="java.lang.String" itemvalue="django-htmlmin" />
+            <item index="12" class="java.lang.String" itemvalue="xlwt" />
+            <item index="13" class="java.lang.String" itemvalue="ipython" />
+            <item index="14" class="java.lang.String" itemvalue="django-compressor" />
+            <item index="15" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="16" class="java.lang.String" itemvalue="django-hosts" />
+            <item index="17" class="java.lang.String" itemvalue="simplejson" />
+            <item index="18" class="java.lang.String" itemvalue="pandas" />
+            <item index="19" class="java.lang.String" itemvalue="boto3" />
+            <item index="20" class="java.lang.String" itemvalue="Django" />
+            <item index="21" class="java.lang.String" itemvalue="django-redis" />
+            <item index="22" class="java.lang.String" itemvalue="python-decouple" />
+            <item index="23" class="java.lang.String" itemvalue="pagarme-python" />
+            <item index="24" class="java.lang.String" itemvalue="pytz" />
+            <item index="25" class="java.lang.String" itemvalue="PyJWT" />
+            <item index="26" class="java.lang.String" itemvalue="elastic-apm" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="compresorrindo.products.models.Purchase.objects" />
+          <option value="compresorrindo.products.models.InconsistencyProduct.objects" />
+          <option value="compresorrindo.clients.models.Clients.objects" />
+          <option value="compresorrindo.products.models.Products.objects" />
+          <option value="compresorrindo.products.models.Itens.objects" />
+          <option value="compresorrindo.products.models.Brand.objects" />
+          <option value="compresorrindo.products.models.SubCategory.objects" />
+          <option value="compresorrindo.products.models.CommodityGroup.objects" />
+          <option value="compresorrindo.products.models.ItemDentalSku.objects" />
+          <option value="compresorrindo.clients.models.City.objects" />
+          <option value="compresorrindo.pagarmeapp.models.BankAccount.objects" />
+          <option value="compresorrindo.pagarmeapp.models.Recipients.objects" />
+          <option value="compresorrindo.products.models.CartItem.objects" />
+          <option value="compresorrindo.pagarmeapp.models.Banks.objects" />
+          <option value="compresorrindo.products.models.PurchaseLink.objects" />
+          <option value="compresorrindo.products.models.InvoiceNotes.objects" />
+          <option value="compresorrindo.clients.models.Searches.objects" />
+          <option value="compresorrindo.products.models.InvoiceNotes.DoesNotExist" />
+          <option value="compresorrindo.clients.models.Newsletter.objects" />
+          <option value="compresorrindo.marketing.models.PartnerLink.objects" />
+          <option value="compresorrindo.marketing.models.Cupom.objects" />
+          <option value="compresorrindo.marketing.models.Banner.objects" />
+          <option value="compresorrindo.products.models.PartnerPurchaseList.objects" />
+          <option value="compresorrindo.products.models.SuggestionCartItem.objects" />
+          <option value="compresorrindo.products.models.Cart.objects" />
+          <option value="compresorrindo.clients.models.User.DoesNotExist" />
+          <option value="compresorrindo.products.models.FavoriteItem.objects" />
+          <option value="compresorrindo.products.models.MarketPlace.objects" />
+          <option value="compresorrindo.products.models.Items.objects" />
+          <option value="src.infrastructure.orm.django.entities.catalog.product.Product.objects" />
+          <option value="src.infrastructure.orm.django.entities.catalog.product.Product.DoesNotExist" />
+          <option value="src.infrastructure.orm.django.entities.catalog.category.Category.objects" />
+          <option value="src.infrastructure.orm.django.entities.catalog.category.Category.DoesNotExist" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
