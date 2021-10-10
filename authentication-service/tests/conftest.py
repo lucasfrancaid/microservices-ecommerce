@@ -2,13 +2,12 @@ from typing import Dict
 
 import pytest
 
-# from src.application.ports.repositories.authentication import AuthenticationRepositoryInMemory
+from src.main import ApplicationFactory, factory_application
 
-# @pytest.fixture(scope='module')
-# def authentication_repository():
-#     repository = AuthenticationRepositoryInMemory()
-#     yield repository
-#     repository.storage.flush()
+
+@pytest.fixture(scope='session')
+def factory() -> ApplicationFactory:
+    return factory_application()
 
 
 @pytest.fixture

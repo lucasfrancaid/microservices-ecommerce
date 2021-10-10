@@ -7,6 +7,7 @@ from starlette.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOU
 from src.main import ApplicationFactory, factory_application
 from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAccountEntity
 from src.application.ports.controllers.sign_up import SignUpController
+from src.application.usecases.exceptions import SignUpConfirmationAccountUseCaseException
 from src.infrastructure.http.fastapi.schemas.user import UserSchema
 
 controller = SignUpController()
@@ -29,8 +30,8 @@ def get_user(user_id: int = None, email: str = None, factory: ApplicationFactory
     return UserSchema(**response.__dict__)
 
 
-@sign_up_router.post('/', response_model=UserSchema)
-def sign_up(entity: SignUpEntity, factory: ApplicationFactory = Depends(factory_application)):
+@sign_up_router.post('/register', response_model=UserSchema)
+def register_user(entity: SignUpEntity, factory: ApplicationFactory = Depends(factory_application)):
     response = controller.post(
         repository=factory.repository,
         password_manager=factory.password_manager,
@@ -44,11 +45,15 @@ def sign_up(entity: SignUpEntity, factory: ApplicationFactory = Depends(factory_
 def confirmation_account(
     entity: SignUpConfirmationAccountEntity, factory: ApplicationFactory = Depends(factory_application)
 ):
-    response = controller.put(repository=factory.repository, email_service=factory.email_service, entity=entity)
+    try:
+        response = controller.put(repository=factory.repository, email_service=factory.email_service, entity=entity)
+    except (SignUpConfirmationAccountUseCaseException) as exc:
+        if str(exc) == 'User not found':
+            return JSONResponse({'message': 'User not found'}, HTTP_404_NOT_FOUND)
     return UserSchema(**response)
 
 
-@sign_up_router.delete('/delete/{user_id}')
+@sign_up_router.delete('/{user_id}')
 def delete_user(user_id: int, factory: ApplicationFactory = Depends(factory_application)):
     deleted = factory.repository.delete(user_id=user_id)
     if not deleted:
