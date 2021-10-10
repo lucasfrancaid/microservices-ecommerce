@@ -56,7 +56,9 @@ def test_sign_up_confirmation_account_entity(sign_up_confirmation_account_entity
     assert confirmation_account_entity.__dict__ == sign_up_confirmation_account_entity_dict
 
 
-def test_sign_up_confirmation_account_entity_invalid_email_should_raise_validation_error(sign_up_confirmation_account_entity_dict: Dict):
+def test_sign_up_confirmation_account_entity_invalid_email_should_raise_validation_error(
+    sign_up_confirmation_account_entity_dict: Dict
+):
     invalid_email = 'luc@s@entity.com.br'
     sign_up_confirmation_account_entity_dict['email'] = invalid_email
 

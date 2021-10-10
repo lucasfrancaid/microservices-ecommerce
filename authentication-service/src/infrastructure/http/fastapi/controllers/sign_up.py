@@ -49,11 +49,7 @@ def sign_up(entity: SignUpEntity):
 
 @sign_up_router.put('/confirmation-account', response_model=UserSchema)
 def confirmation_account(entity: SignUpConfirmationAccountEntity):
-    response = controller.put(
-        repository=factory.repository,
-        email_service=factory.email_service,
-        entity=entity
-    )
+    response = controller.put(repository=factory.repository, email_service=factory.email_service, entity=entity)
     return UserSchema(**response.__dict__)
 
 

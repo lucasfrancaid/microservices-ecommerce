@@ -9,8 +9,10 @@ from src.application.usecases.sign_up import SignUpUseCase, SignUpConfirmationAc
 class SignUpController(Controller):
 
     @staticmethod
-    def post(repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService,
-             entity: SignUpEntity):
+    def post(
+        repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService,
+        entity: SignUpEntity
+    ):
         use_case = SignUpUseCase(
             repository=repository,
             password_manager=password_manager,

@@ -13,8 +13,7 @@ from src.application.usecases.exceptions import SignUpUseCaseException, SignUpCo
 class SignUpUseCase(UseCase):
 
     def __init__(
-        self, repository: AuthenticationRepository, password_manager: PasswordManager,
-        email_service: EmailService
+        self, repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService
     ) -> None:
         self.repository: AuthenticationRepository = repository
         self.password_manager: PasswordManager = password_manager

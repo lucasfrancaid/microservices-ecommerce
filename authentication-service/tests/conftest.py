@@ -4,7 +4,6 @@ import pytest
 
 # from src.application.ports.repositories.authentication import AuthenticationRepositoryInMemory
 
-
 # @pytest.fixture(scope='module')
 # def authentication_repository():
 #     repository = AuthenticationRepositoryInMemory()
@@ -59,8 +58,5 @@ def sign_up_entity_dict() -> Dict:
 
 @pytest.fixture
 def sign_up_confirmation_account_entity_dict() -> Dict:
-    sign_up_confirmation = {
-        'email': 'lucas.account@entity.com',
-        'confirmation_code': 123
-    }
+    sign_up_confirmation = {'email': 'lucas.account@entity.com', 'confirmation_code': 123}
     return sign_up_confirmation

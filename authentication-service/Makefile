@@ -13,6 +13,11 @@ coverage:
 	@coverage report -m
 	@coverage html
 
+pre-commit:
+	@echo '--> Running pre-commit yapf formatter and pytest hooks'
+	@pre-commit install
+	@pre-commit run --all-files
+
 dev_packages:
 	@echo '--> Installing dev packages'
 	@pipenv install --dev

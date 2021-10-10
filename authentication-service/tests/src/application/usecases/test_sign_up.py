@@ -20,11 +20,7 @@ email_service = EmailServiceFake()
 
 def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
     sign_up_entity = SignUpEntity(**sign_up_entity_dict)
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_service=email_service
-    )
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager, email_service=email_service)
 
     serialized_user = use_case.serialize(entity=sign_up_entity)
 
@@ -38,11 +34,7 @@ def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
 
 def test_sign_up_use_case_deserialize(user_entity_dict: Dict):
     user_entity = UserEntity(**user_entity_dict)
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_service=email_service
-    )
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager, email_service=email_service)
 
     deserialized_user = use_case.deserialize(user_entity=user_entity)
 
@@ -52,22 +44,14 @@ def test_sign_up_use_case_deserialize(user_entity_dict: Dict):
 
 def test_sign_up_use_case_check_if_email_is_available():
     entity = EmailEntity(email='lucas@domain.com')
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_service=email_service
-    )
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager, email_service=email_service)
 
     assert use_case.check_if_email_is_available(email=entity.email) is True
 
 
 def test_sign_up_use_case_user_register(user_entity_dict: Dict):
     user_entity = UserEntity(**user_entity_dict)
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_service=email_service
-    )
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager, email_service=email_service)
 
     registered_user = use_case.user_register(user_entity=user_entity)
 
@@ -79,22 +63,14 @@ def test_sign_up_use_case_user_register(user_entity_dict: Dict):
 
 def test_sign_up_use_case_send_email(user_entity_dict: Dict):
     user_entity = UserEntity(**user_entity_dict)
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_service=email_service
-    )
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager, email_service=email_service)
 
     assert use_case.send_email(user_entity=user_entity) is None
 
 
 def test_sign_up_use_case_handler(sign_up_entity_dict: Dict):
     sign_up_entity = SignUpEntity(**sign_up_entity_dict)
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_service=email_service
-    )
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager, email_service=email_service)
 
     registered_user = use_case.handler(entity=sign_up_entity)
 
@@ -113,11 +89,7 @@ def test_sign_up_use_case_handler_user_email_is_active_must_raise_exception(sign
     user.is_active = True
     user = repository.update(user_id=user.user_id, user_entity=user)
 
-    use_case = SignUpUseCase(
-        repository=repository,
-        password_manager=password_manager,
-        email_service=email_service
-    )
+    use_case = SignUpUseCase(repository=repository, password_manager=password_manager, email_service=email_service)
 
     with pytest.raises(SignUpUseCaseException) as exc:
         use_case.handler(entity=sign_up_entity)
@@ -126,10 +98,7 @@ def test_sign_up_use_case_handler_user_email_is_active_must_raise_exception(sign
 
 
 def test_sign_up_confirmation_account_use_case_serialize_must_raise_not_implemented_error():
-    use_case = SignUpConfirmationAccountUseCase(
-        repository=repository,
-        email_service=email_service
-    )
+    use_case = SignUpConfirmationAccountUseCase(repository=repository, email_service=email_service)
 
     with pytest.raises(NotImplementedError):
         use_case.serialize()
@@ -137,10 +106,7 @@ def test_sign_up_confirmation_account_use_case_serialize_must_raise_not_implemen
 
 def test_sign_up_confirmation_account_use_case_deserialize(user_entity_dict: Dict):
     user_entity = UserEntity(**user_entity_dict)
-    use_case = SignUpConfirmationAccountUseCase(
-        repository=repository,
-        email_service=email_service
-    )
+    use_case = SignUpConfirmationAccountUseCase(repository=repository, email_service=email_service)
 
     deserialized_user = use_case.deserialize(user_entity=user_entity)
 
@@ -148,14 +114,12 @@ def test_sign_up_confirmation_account_use_case_deserialize(user_entity_dict: Dic
     assert deserialized_user == user_entity.__dict__
 
 
-def test_sign_up_confirmation_account_use_case_handler(sign_up_confirmation_account_entity_dict: Dict,
-                                                       user_entity_dict: Dict):
+def test_sign_up_confirmation_account_use_case_handler(
+    sign_up_confirmation_account_entity_dict: Dict, user_entity_dict: Dict
+):
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
     user_entity = UserEntity(**user_entity_dict)
-    use_case = SignUpConfirmationAccountUseCase(
-        repository=repository,
-        email_service=email_service
-    )
+    use_case = SignUpConfirmationAccountUseCase(repository=repository, email_service=email_service)
 
     user_entity.user_id = 999
     user_entity.email = entity.email
@@ -169,12 +133,9 @@ def test_sign_up_confirmation_account_use_case_handler(sign_up_confirmation_acco
 
 
 def test_sign_up_confirmation_account_use_case_handler_non_existent_user_must_raise_exception(
-        sign_up_confirmation_account_entity_dict: Dict
+    sign_up_confirmation_account_entity_dict: Dict
 ):
-    use_case = SignUpConfirmationAccountUseCase(
-        repository=repository,
-        email_service=email_service
-    )
+    use_case = SignUpConfirmationAccountUseCase(repository=repository, email_service=email_service)
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
     entity.email = 'non.existent@entity.com'
 
@@ -185,14 +146,11 @@ def test_sign_up_confirmation_account_use_case_handler_non_existent_user_must_ra
 
 
 def test_sign_up_confirmation_account_use_case_handler_invalid_confirmation_code_must_raise_exception(
-        sign_up_confirmation_account_entity_dict: Dict
+    sign_up_confirmation_account_entity_dict: Dict
 ):
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
     entity.confirmation_code = 456
-    use_case = SignUpConfirmationAccountUseCase(
-        repository=repository,
-        email_service=email_service
-    )
+    use_case = SignUpConfirmationAccountUseCase(repository=repository, email_service=email_service)
 
     with pytest.raises(SignUpConfirmationAccountUseCaseValidationError) as exc:
         use_case.handler(confirmation_entity=entity)
