@@ -2,16 +2,21 @@ ENV_FILE := .env
 
 run:
 	@echo '--> Starting Authentication Service'
-	@uvicorn service.adapters.fastapi.main:app --host 0.0.0.0 --port 8000
+	@uvicorn src.infrastructure.http.fastapi.main:app --reload --host 0.0.0.0 --port 8000
 
 test: dev_packages
 	@echo '--> Running Tests for Authentication Service'
 	@python -m pytest $(args)
 
 coverage:
-	@coverage run --source service -m pytest
+	@coverage run --source src -m pytest
 	@coverage report -m
 	@coverage html
+
+pre-commit:
+	@echo '--> Running pre-commit yapf formatter and pytest hooks'
+	@pre-commit install
+	@pre-commit run --all-files
 
 dev_packages:
 	@echo '--> Installing dev packages'

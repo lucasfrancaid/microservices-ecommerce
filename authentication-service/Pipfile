@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 pydantic = "*"
-email-validator = "*"
 bcrypt = "*"
 fastapi = "*"
 uvicorn = "*"
@@ -18,3 +17,4 @@ python_version = "3.9"
 pytest = "*"
 coverage = "*"
 yapf = "*"
+pre-commit = "*"
