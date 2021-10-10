@@ -7,10 +7,6 @@ app = FastAPI(
     title='Authentication',
     description='Service to Authentication Management',
     version='0.0.1',
-    contact={
-        'name': 'Microservices E-commerce',
-        'url': 'https://github.com/lucasfrancaid/microservices-ecommerce',
-    }
 )
 
 app.include_router(sign_up_router)

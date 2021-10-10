@@ -45,7 +45,7 @@ class SignUpUseCase(UseCase):
         )
         return user_entity
 
-    def deserialize(self, user_entity: UserEntity):
+    def deserialize(self, user_entity: UserEntity) -> Dict:
         return user_entity.__dict__
 
     def check_if_email_is_available(self, email: str) -> bool:

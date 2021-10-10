@@ -1,60 +1,55 @@
 from typing import List
 
-import bcrypt
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from starlette.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from starlette.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
-from src.main import FactoryApplication
+from src.main import ApplicationFactory, factory_application
 from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAccountEntity
 from src.application.ports.controllers.sign_up import SignUpController
-from src.application.ports.repositories.authentication import AuthenticationRepositoryInMemory
-from src.application.services.email import EmailServiceFake
-from src.infrastructure.security.bcrypt import PasswordManagerBcrypt
 from src.infrastructure.http.fastapi.schemas.user import UserSchema
 
 controller = SignUpController()
-factory = FactoryApplication(
-    repository=AuthenticationRepositoryInMemory(),
-    password_manager=PasswordManagerBcrypt(salt=bcrypt.gensalt()),
-    email_service=EmailServiceFake()
-)
 sign_up_router = APIRouter(prefix='/sign-up', tags=['Sign Up'])
 
 
 @sign_up_router.get('/users', response_model=List[UserSchema])
-def get_all_users(page: int = 1, limit: int = 20):
+def get_all_users(page: int = 1, limit: int = 20, factory: ApplicationFactory = Depends(factory_application)):
     response = [UserSchema(**user.__dict__) for user in factory.repository.all(page=page, limit=limit)]
     return response
 
 
 @sign_up_router.get('/user', response_model=UserSchema)
-def get_user(user_id: int = None, email: str = None):
+def get_user(user_id: int = None, email: str = None, factory: ApplicationFactory = Depends(factory_application)):
     if not user_id and not email:
         return JSONResponse({'message': 'User id or email is required'}, HTTP_400_BAD_REQUEST)
     response = factory.repository.get(user_id=user_id, email=email)
+    if not response:
+        return JSONResponse({'message': 'User not found'}, HTTP_404_NOT_FOUND)
     return UserSchema(**response.__dict__)
 
 
 @sign_up_router.post('/', response_model=UserSchema)
-def sign_up(entity: SignUpEntity):
+def sign_up(entity: SignUpEntity, factory: ApplicationFactory = Depends(factory_application)):
     response = controller.post(
         repository=factory.repository,
         password_manager=factory.password_manager,
         email_service=factory.email_service,
         entity=entity
     )
-    return UserSchema(**response.__dict__)
+    return UserSchema(**response)
 
 
 @sign_up_router.put('/confirmation-account', response_model=UserSchema)
-def confirmation_account(entity: SignUpConfirmationAccountEntity):
+def confirmation_account(
+    entity: SignUpConfirmationAccountEntity, factory: ApplicationFactory = Depends(factory_application)
+):
     response = controller.put(repository=factory.repository, email_service=factory.email_service, entity=entity)
-    return UserSchema(**response.__dict__)
+    return UserSchema(**response)
 
 
 @sign_up_router.delete('/delete/{user_id}')
-def delete_user(user_id: int):
+def delete_user(user_id: int, factory: ApplicationFactory = Depends(factory_application)):
     deleted = factory.repository.delete(user_id=user_id)
     if not deleted:
         return JSONResponse({'message': 'User was not deleted'}, HTTP_400_BAD_REQUEST)
