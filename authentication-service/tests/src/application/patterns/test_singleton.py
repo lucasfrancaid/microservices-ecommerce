@@ -10,3 +10,5 @@ def test_singleton():
     instance_2 = Generic()
 
     assert instance_1 == instance_2
+    assert id(instance_1) == id(instance_2)
+    assert hash(instance_1) == hash(instance_2)
