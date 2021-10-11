@@ -1,11 +1,8 @@
-import bcrypt
-
 from src.application.ports.repositories.authentication import AuthenticationRepository, AuthenticationRepositoryInMemory
 from src.application.security.password_manager import PasswordManager
 from src.application.services.email import EmailService, EmailServiceFake
+from src.infrastructure.config.settings import Settings
 from src.infrastructure.security.bcrypt import PasswordManagerBcrypt
-
-PASSWORD_SALT = bcrypt.gensalt()
 
 
 class ApplicationFactory():
@@ -21,7 +18,7 @@ class ApplicationFactory():
 def factory_application() -> ApplicationFactory:
     factory = ApplicationFactory(
         repository=AuthenticationRepositoryInMemory(),
-        password_manager=PasswordManagerBcrypt(salt=PASSWORD_SALT),
+        password_manager=PasswordManagerBcrypt(salt=Settings.PASSWORD_SALT),
         email_service=EmailServiceFake()
     )
     return factory

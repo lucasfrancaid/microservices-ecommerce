@@ -12,6 +12,23 @@
 - Pytest
 - FastAPI as Adapter
 
+## Setup
+Install packages and activate virtual environment:
+```bash
+pipenv install
+pipenv shell
+```
+
+Create a .env file:
+```bash
+cp .env.sample .env
+```
+
+Run application:
+```bash
+make run
+```
+
 ## Tests
 To run tests locally, is necessary activate virtualenv:
 ```bash
@@ -20,10 +37,17 @@ pipenv shell
 
 Running tests:
 ```bash
-make test args=-v
+make test args='-v -s'
 ```
 
 Coverage generate:
 ```bash
 make coverage
 ```
+
+## To do
+- Add a free email service
+- Turn app to async
+- Add PostgreSQL as Database with SqlAlchemy (add databse strategy to instance from env config)
+- Sign In Use Case
+- Recovery Password Use Case

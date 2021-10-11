@@ -9,6 +9,7 @@ bcrypt = "*"
 fastapi = "*"
 uvicorn = "*"
 requests = "*"
+python-decouple = "*"
 
 [requires]
 python_version = "3.9"
