@@ -8,7 +8,7 @@ from src.main import ApplicationFactory, factory_application
 from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAccountEntity
 from src.application.ports.controllers.sign_up import SignUpController
 from src.application.usecases.exceptions import SignUpConfirmationAccountUseCaseException
-from src.infrastructure.http.fastapi.schemas.user import UserSchema
+from src.infrastructure.http.common.schemas.user import UserSchema
 
 controller = SignUpController()
 sign_up_router = APIRouter(prefix='/sign-up', tags=['Sign Up'])
