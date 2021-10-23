@@ -2,7 +2,7 @@ from typing import Dict
 
 import pytest
 
-from src.main import ApplicationFactory, factory_application
+from src.infrastructure.factories.main import ApplicationFactory, factory_application
 
 
 @pytest.fixture(scope='session')

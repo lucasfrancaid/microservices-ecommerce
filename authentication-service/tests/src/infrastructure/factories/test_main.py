@@ -1,7 +1,7 @@
-from src.main import ApplicationFactory, factory_application
 from src.application.ports.repositories.authentication import AuthenticationRepository, AuthenticationRepositoryInMemory
 from src.application.services.email import EmailService, EmailServiceFake
 from src.application.security.password_manager import PasswordManager, PasswordManagerFake
+from src.infrastructure.factories.main import ApplicationFactory, factory_application
 from src.infrastructure.security.bcrypt import PasswordManagerBcrypt
 
 

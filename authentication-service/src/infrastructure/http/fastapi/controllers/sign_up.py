@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from starlette.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
-from src.main import ApplicationFactory, factory_application
 from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAccountEntity
 from src.application.ports.controllers.sign_up import SignUpController
 from src.application.usecases.exceptions import SignUpConfirmationAccountUseCaseException
+from src.infrastructure.factories.main import ApplicationFactory, factory_application
 from src.infrastructure.http.common.schemas.user import UserSchema
 
 controller = SignUpController()

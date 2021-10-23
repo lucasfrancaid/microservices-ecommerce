@@ -15,3 +15,6 @@ class Settings:
         'PASSWORD': config('EMAIL_PASSWORD'),
         'USE_TLS': config('EMAIL_USE_TLS', default=False, cast=bool),
     }
+
+
+static_settings = Settings()

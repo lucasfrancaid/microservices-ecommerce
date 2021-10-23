@@ -4,8 +4,8 @@ from typing import Dict
 import pytest
 from fastapi.testclient import TestClient
 
-from src.main import ApplicationFactory
 from src.domain.entities.user import UserEntity
+from src.infrastructure.factories.main import ApplicationFactory
 from src.infrastructure.http.fastapi.main import app
 
 client = TestClient(app)
