@@ -5,7 +5,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.domain.entities.user import UserEntity
-from src.infrastructure.factories.main import ApplicationFactory
+from src.infrastructure.factories.app import ApplicationFactory
 from src.infrastructure.http.fastapi.main import app
 
 client = TestClient(app)
