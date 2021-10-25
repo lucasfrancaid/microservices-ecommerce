@@ -10,10 +10,11 @@ from src.application.security.password_manager import PasswordManagerFake
 from src.application.services.email import EmailServiceFake
 
 
-def test_sign_up_controller_post_method(sign_up_entity_dict: Dict):
+@pytest.mark.asyncio
+async def test_sign_up_controller_post_method(sign_up_entity_dict: Dict):
     controller = SignUpController()
 
-    response = controller.post(
+    response = await controller.post(
         repository=AuthenticationRepositoryInMemory(),
         password_manager=PasswordManagerFake(),
         email_service=EmailServiceFake(),
@@ -24,7 +25,8 @@ def test_sign_up_controller_post_method(sign_up_entity_dict: Dict):
     assert UserEntity(**response)
 
 
-def test_sign_up_controller_put_method(sign_up_confirmation_account_entity_dict: Dict, user_entity_dict: Dict):
+@pytest.mark.asyncio
+async def test_sign_up_controller_put_method(sign_up_confirmation_account_entity_dict: Dict, user_entity_dict: Dict):
     controller = SignUpController()
     repository = AuthenticationRepositoryInMemory()
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
@@ -36,7 +38,7 @@ def test_sign_up_controller_put_method(sign_up_confirmation_account_entity_dict:
     user_entity.confirmation_code = entity.confirmation_code
     repository.storage.data.append(user_entity)
 
-    response = controller.put(
+    response = await controller.put(
         repository=repository,
         email_service=EmailServiceFake(),
         entity=entity,
@@ -46,16 +48,19 @@ def test_sign_up_controller_put_method(sign_up_confirmation_account_entity_dict:
     assert UserEntity(**response)
 
 
-def test_sign_up_controller_get_not_implemented():
+@pytest.mark.asyncio
+async def test_sign_up_controller_get_not_implemented():
     with pytest.raises(NotImplementedError):
         SignUpController().get()
 
 
-def test_sign_up_controller_patch_not_implemented():
+@pytest.mark.asyncio
+async def test_sign_up_controller_patch_not_implemented():
     with pytest.raises(NotImplementedError):
         SignUpController().patch()
 
 
-def test_sign_up_controller_delete_not_implemented():
+@pytest.mark.asyncio
+async def test_sign_up_controller_delete_not_implemented():
     with pytest.raises(NotImplementedError):
         SignUpController().delete()

@@ -9,7 +9,7 @@ from src.application.usecases.sign_up import SignUpUseCase, SignUpConfirmationAc
 class SignUpController(Controller):
 
     @staticmethod
-    def post(
+    async def post(
         repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService,
         entity: SignUpEntity
     ):
@@ -18,16 +18,16 @@ class SignUpController(Controller):
             password_manager=password_manager,
             email_service=email_service,
         )
-        response = use_case.handler(entity=entity)
+        response = await use_case.handler(entity=entity)
         return response
 
     @staticmethod
-    def put(repository: AuthenticationRepository, email_service: EmailService, entity: SignUpConfirmationAccountEntity):
+    async def put(repository: AuthenticationRepository, email_service: EmailService, entity: SignUpConfirmationAccountEntity):
         use_case = SignUpConfirmationAccountUseCase(
             repository=repository,
             email_service=email_service,
         )
-        response = use_case.handler(confirmation_entity=entity)
+        response = await use_case.handler(confirmation_entity=entity)
         return response
 
     def get(self):

@@ -13,5 +13,5 @@ app.include_router(sign_up_router)
 
 
 @app.get('/health-check', tags=['Default'], response_class=JSONResponse)
-def health_check():
+async def health_check():
     return {'message': 'Is alive!'}

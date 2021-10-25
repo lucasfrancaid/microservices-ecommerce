@@ -9,19 +9,19 @@ from src.application.patterns.singleton import Singleton
 
 class AuthenticationRepository(Repository):
 
-    def all(self, page: int = 1, limit: int = 20) -> List[Optional[UserEntity]]:
+    async def all(self, page: int = 1, limit: int = 20) -> List[Optional[UserEntity]]:
         raise NotImplementedError
 
-    def get(self, user_id: Optional[int] = None, email: Optional[str] = None) -> Union[UserEntity, None]:
+    async def get(self, user_id: Optional[int] = None, email: Optional[str] = None) -> Union[UserEntity, None]:
         raise NotImplementedError
 
-    def create(self, user_entity: UserEntity = None) -> Union[UserEntity, None]:
+    async def create(self, user_entity: UserEntity = None) -> Union[UserEntity, None]:
         raise NotImplementedError
 
-    def update(self, user_id: int = None, user_entity: UserEntity = None) -> Union[UserEntity, None]:
+    async def update(self, user_id: int = None, user_entity: UserEntity = None) -> Union[UserEntity, None]:
         raise NotImplementedError
 
-    def delete(self, user_id: int = None) -> bool:
+    async def delete(self, user_id: int = None) -> bool:
         raise NotImplementedError
 
 
@@ -41,16 +41,16 @@ class AuthenticationRepositoryInMemory(AuthenticationRepository):
         self.configuration: RepositoryConfigurationEntity = configuration
         self.storage = AuthenticationMemoryStorage()
 
-    def all(self, page: int = 1, limit: int = 20) -> List[Optional[UserEntity]]:
+    async def all(self, page: int = 1, limit: int = 20) -> List[Optional[UserEntity]]:
         skip = (page - 1) * limit
         offset = page * limit
         return self.storage.data[skip:offset]
 
-    def get(self, user_id: Optional[int] = None, email: Optional[str] = None) -> Union[UserEntity, None]:
+    async def get(self, user_id: Optional[int] = None, email: Optional[str] = None) -> Union[UserEntity, None]:
         user = [user for user in self.storage.data if user.user_id == user_id or user.email == email]
         return user[0] if user else None
 
-    def create(self, user_entity: UserEntity) -> Union[UserEntity, None]:
+    async def create(self, user_entity: UserEntity) -> Union[UserEntity, None]:
         self.storage.next_id += 1
         user_entity.user_id = self.storage.next_id
         user_entity.confirmation_code = self.storage.next_id    # TODO: Confirmation code is domain of SignUpEntity
@@ -58,14 +58,14 @@ class AuthenticationRepositoryInMemory(AuthenticationRepository):
         self.storage.data.append(user_entity)
         return user_entity
 
-    def update(self, user_id: int, user_entity: UserEntity) -> Union[UserEntity, None]:
+    async def update(self, user_id: int, user_entity: UserEntity) -> Union[UserEntity, None]:
         index = [index for index, user in enumerate(self.storage.data) if user.user_id == user_id]
         if not index:
             return None
         self.storage.data[index[0]] = user_entity
         return user_entity
 
-    def delete(self, user_id: int) -> bool:
+    async def delete(self, user_id: int) -> bool:
         index = [index for index, user in enumerate(self.storage.data) if user.user_id == user_id]
         if not index:
             return False
