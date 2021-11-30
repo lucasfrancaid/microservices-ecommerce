@@ -5,7 +5,7 @@ from src.infrastructure.factories.app import ApplicationFactory, factory_applica
 from src.infrastructure.security.bcrypt import PasswordManagerBcrypt
 
 
-def test_aplication_factory():
+def test_application_factory():
     application_factory = ApplicationFactory(
         repository=AuthenticationRepositoryInMemory(),
         email_service=EmailServiceFake(),
