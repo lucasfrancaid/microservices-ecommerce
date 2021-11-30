@@ -8,26 +8,26 @@ from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAcc
 from src.application.ports.controllers.sign_up import SignUpController
 from src.application.usecases.exceptions import SignUpConfirmationAccountUseCaseException
 from src.infrastructure.factories.app import ApplicationFactory, factory_application
-from src.infrastructure.http.common.schemas.user import UserSchema
+from src.infrastructure.http.common.schemas.user import UserSchema, UserSchemaDTO
 
 controller = SignUpController()
 sign_up_router = APIRouter(prefix='/sign-up', tags=['Sign Up'])
 
 
-@sign_up_router.get('/users', response_model=List[UserSchema])
+@sign_up_router.get('/users', response_model=List[UserSchemaDTO])
 def get_all_users(page: int = 1, limit: int = 20, factory: ApplicationFactory = Depends(factory_application)):
-    response = [UserSchema(**user.__dict__) for user in factory.repository.all(page=page, limit=limit)]
+    response = [UserSchemaDTO(**user.__dict__) for user in factory.repository.all(page=page, limit=limit)]
     return response
 
 
-@sign_up_router.get('/user', response_model=UserSchema)
+@sign_up_router.get('/user', response_model=UserSchemaDTO)
 def get_user(user_id: int = None, email: str = None, factory: ApplicationFactory = Depends(factory_application)):
     if not user_id and not email:
         return JSONResponse({'message': 'User id or email is required'}, HTTP_400_BAD_REQUEST)
     response = factory.repository.get(user_id=user_id, email=email)
     if not response:
         return JSONResponse({'message': 'User not found'}, HTTP_404_NOT_FOUND)
-    return UserSchema(**response.__dict__)
+    return UserSchemaDTO(**response.__dict__)
 
 
 @sign_up_router.post('/register', response_model=UserSchema)

@@ -4,7 +4,7 @@ from src.application.security.password_manager import PasswordManagerFake
 from src.application.services.email import EmailServiceFake
 
 
-def test_factory():
+def test_factory_pattern():
     factory = Factory(
         repository=AuthenticationRepositoryInMemory(),
         password_manager=PasswordManagerFake(),

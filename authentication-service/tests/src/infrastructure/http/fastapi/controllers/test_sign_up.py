@@ -37,10 +37,6 @@ def test_get_user(factory: ApplicationFactory):
     assert data['first_name'] == user.first_name
     assert data['last_name'] == user.last_name
     assert data['email'] == user.email
-    assert data['hash_password'] == user.hash_password.decode()
-    assert data['is_active'] == user.is_active
-    assert data['confirmation_code'] == user.confirmation_code
-    assert data['created_at'] == user.created_at.isoformat()
 
     factory.repository.delete(user_id=user.user_id)
 
