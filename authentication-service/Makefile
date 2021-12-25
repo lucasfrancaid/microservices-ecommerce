@@ -2,7 +2,7 @@ ENV_FILE := .env
 
 run:
 	@echo '--> Starting Authentication Service'
-	@uvicorn src.infrastructure.http.fastapi.main:app --reload --host 0.0.0.0 --port 8000
+	@uvicorn src.adapters.fastapi.main:app --reload --host 0.0.0.0 --port 8000
 
 test: dev_packages
 	@echo '--> Running Tests for Authentication Service'
