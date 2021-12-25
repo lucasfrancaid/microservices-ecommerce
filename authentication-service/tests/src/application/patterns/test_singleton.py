@@ -1,7 +1,7 @@
 from src.application.patterns.singleton import Singleton
 
 
-def test_singleton():
+def test_singleton_pattern():
 
     class Generic(metaclass=Singleton):
         ...

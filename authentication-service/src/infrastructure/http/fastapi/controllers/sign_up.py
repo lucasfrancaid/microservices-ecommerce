@@ -8,7 +8,7 @@ from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAcc
 from src.application.ports.controllers.sign_up import SignUpController
 from src.application.usecases.exceptions import SignUpConfirmationAccountUseCaseException
 from src.infrastructure.factories.app import ApplicationFactory, factory_application
-from src.infrastructure.http.common.schemas.user import UserSchema
+from src.infrastructure.http.common.schemas.user import UserSchema, UserSchemaDTO
 
 controller = SignUpController()
 sign_up_router = APIRouter(prefix='/sign-up', tags=['Sign Up'])
@@ -27,7 +27,7 @@ async def get_user(user_id: int = None, email: str = None, factory: ApplicationF
     response = await factory.repository.get(user_id=user_id, email=email)
     if not response:
         return JSONResponse({'message': 'User not found'}, HTTP_404_NOT_FOUND)
-    return UserSchema(**response.__dict__)
+    return UserSchemaDTO(**response.__dict__)
 
 
 @sign_up_router.post('/register', response_model=UserSchema)
