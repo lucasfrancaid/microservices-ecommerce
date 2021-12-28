@@ -1,13 +1,49 @@
+import asyncio
 from typing import Dict
 
 import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.infrastructure.factories.app import ApplicationFactory, factory_application
+from src.infrastructure.factories.orm import SqlAlchemyFactory
 
 
 @pytest.fixture(scope='session')
-def factory() -> ApplicationFactory:
-    return factory_application()
+def fastapi_client() -> TestClient:
+    from src.adapters.http.fastapi.main import app
+    client = TestClient(app)
+    return client
+
+
+@pytest.fixture
+async def factory() -> ApplicationFactory:
+    return await factory_application()
+
+
+@pytest.fixture(scope="session")
+def event_loop():
+    loop = asyncio.new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest.fixture(scope='session')
+async def manage_database():
+    from src.infrastructure.orm.sqlalchemy.database import Base, engine
+    conn = await engine.begin()
+    await conn.run_sync(Base.metadata.drop_all)
+    await conn.run_sync(Base.metadata.create_all)
+    yield conn
+    await conn.run_sync(Base.metadata.drop_all)
+    await conn.close()
+
+
+@pytest.fixture
+async def sqlalchemy_session(manage_database) -> AsyncSession:
+    session = await SqlAlchemyFactory.session()
+    yield session
+    await session.close()
 
 
 @pytest.fixture

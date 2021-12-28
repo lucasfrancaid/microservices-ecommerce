@@ -35,10 +35,21 @@ To run tests locally, is necessary activate virtualenv:
 pipenv shell
 ```
 
-Running tests:
+Running all tests (Slower):
 ```bash
 make test args='-v -s'
 ```
+
+Running core tests (Faster):
+```bash
+make test args='-v -s -m "not fastapi and not sqlite"'
+```
+
+Running adapter tests (Faster):
+```bash
+make test args='-v -s -m fastapi' # or sqlite
+```
+
 
 Coverage generate:
 ```bash
@@ -47,7 +58,6 @@ make coverage
 
 ## To do
 - Add a free email service
-- Turn app to async
 - Add PostgreSQL as Database with SqlAlchemy (add databse strategy to instance from env config)
 - Sign In Use Case
 - Recovery Password Use Case

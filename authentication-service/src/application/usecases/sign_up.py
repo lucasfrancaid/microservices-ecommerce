@@ -4,7 +4,7 @@ from src.domain.entities.user import UserEntity
 from src.application.entities.email import SendEmailEntity
 from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAccountEntity
 from src.application.interfaces.usecase import UseCase
-from src.application.ports.repositories.authentication import AuthenticationRepository
+from src.application.repositories.authentication import AuthenticationRepository
 from src.application.security.password_manager import PasswordManager
 from src.application.services.email import EmailService
 from src.application.usecases.exceptions import SignUpUseCaseException, SignUpConfirmationAccountUseCaseException, \
@@ -14,7 +14,7 @@ from src.application.usecases.exceptions import SignUpUseCaseException, SignUpCo
 class SignUpUseCase(UseCase):
 
     def __init__(
-            self, repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService
+        self, repository: AuthenticationRepository, password_manager: PasswordManager, email_service: EmailService
     ) -> None:
         self.repository: AuthenticationRepository = repository
         self.password_manager: PasswordManager = password_manager
@@ -83,6 +83,7 @@ class SignUpConfirmationAccountUseCase(UseCase):
             raise SignUpConfirmationAccountUseCaseValidationError('Incorrect confirmation code')
 
         user.is_active = True
+        user.confirmation_code = None
         updated_user = await self.repository.update(user_id=user.user_id, user_entity=user)
 
         deserialized_user = await self.deserialize(user_entity=updated_user)

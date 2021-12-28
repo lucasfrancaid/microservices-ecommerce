@@ -1,5 +1,5 @@
+from src.adapters.repositories.authentication_in_memory import AuthenticationRepositoryInMemory
 from src.application.patterns.factory import Factory
-from src.application.ports.repositories.authentication import AuthenticationRepositoryInMemory
 from src.application.security.password_manager import PasswordManagerFake
 from src.application.services.email import EmailServiceFake
 

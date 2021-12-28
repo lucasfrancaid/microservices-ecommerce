@@ -3,15 +3,15 @@ from typing import Dict
 
 import pytest
 
-from src.domain.entities.user import UserEntity
+from src.adapters.repositories.authentication_in_memory import AuthenticationRepositoryInMemory
 from src.application.entities.email import EmailEntity
 from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAccountEntity
-from src.application.ports.repositories.authentication import AuthenticationRepositoryInMemory
 from src.application.services.email import EmailServiceFake
 from src.application.security.password_manager import PasswordManagerFake
 from src.application.usecases.sign_up import SignUpConfirmationAccountUseCase, SignUpUseCase
 from src.application.usecases.exceptions import SignUpUseCaseException, SignUpConfirmationAccountUseCaseException, \
     SignUpConfirmationAccountUseCaseValidationError
+from src.domain.entities.user import UserEntity
 
 repository = AuthenticationRepositoryInMemory()
 password_manager = PasswordManagerFake()
@@ -30,7 +30,7 @@ async def test_sign_up_use_case_serialize(sign_up_entity_dict: Dict):
     assert serialized_user.email == sign_up_entity.email
     assert serialized_user.hash_password == sign_up_entity.password.encode()
     assert serialized_user.is_active is False
-    assert serialized_user.confirmation_code is None
+    assert serialized_user.confirmation_code is not None
 
 
 @pytest.mark.asyncio
@@ -127,11 +127,12 @@ async def test_sign_up_confirmation_account_use_case_deserialize(user_entity_dic
 async def test_sign_up_confirmation_account_use_case_handler(
     sign_up_confirmation_account_entity_dict: Dict, user_entity_dict: Dict
 ):
+    sign_up_confirmation_account_entity_dict['email'] = 'lucas.unique@account.com'
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
     user_entity = UserEntity(**user_entity_dict)
     use_case = SignUpConfirmationAccountUseCase(repository=repository, email_service=email_service)
 
-    user_entity.user_id = 999
+    user_entity.user_id = 149
     user_entity.email = entity.email
     user_entity.is_active = False
     user_entity.confirmation_code = entity.confirmation_code
