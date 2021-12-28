@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
 from src.application.entities.email import EmailEntity
-from src.application.entities.exceptions import SignUpEntityValidationError, SignUpConfirmationAccountEntityValidationError
+from src.application.entities.exceptions import SignUpEntityValidationError, \
+    SignUpConfirmationAccountEntityValidationError
 
 
 @dataclass

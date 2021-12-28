@@ -4,10 +4,11 @@ from src.domain.entities.user import UserEntity
 from src.application.entities.email import SendEmailEntity
 from src.application.entities.sign_up import SignUpEntity, SignUpConfirmationAccountEntity
 from src.application.interfaces.usecase import UseCase
-from src.application.ports.repositories.authentication import AuthenticationRepository
+from src.application.repositories.authentication import AuthenticationRepository
 from src.application.security.password_manager import PasswordManager
 from src.application.services.email import EmailService
-from src.application.usecases.exceptions import SignUpUseCaseException, SignUpConfirmationAccountUseCaseException, SignUpConfirmationAccountUseCaseValidationError
+from src.application.usecases.exceptions import SignUpUseCaseException, SignUpConfirmationAccountUseCaseException, \
+    SignUpConfirmationAccountUseCaseValidationError
 
 
 class SignUpUseCase(UseCase):
@@ -19,20 +20,20 @@ class SignUpUseCase(UseCase):
         self.password_manager: PasswordManager = password_manager
         self.email_service: EmailService = email_service
 
-    def handler(self, entity: SignUpEntity):
-        email_is_available = self.check_if_email_is_available(email=entity.email)
+    async def handler(self, entity: SignUpEntity) -> Dict:
+        email_is_available = await self.check_if_email_is_available(email=entity.email)
 
         if not email_is_available:
             raise SignUpUseCaseException('Email is not available')
 
-        serialized_user = self.serialize(entity=entity)
-        user_entity = self.user_register(user_entity=serialized_user)
-        self.send_email(user_entity)
+        serialized_user = await self.serialize(entity=entity)
+        user_entity = await self.user_register(user_entity=serialized_user)
+        await self.send_email(user_entity)
 
-        deserialized_user = self.deserialize(user_entity=user_entity)
+        deserialized_user = await self.deserialize(user_entity=user_entity)
         return deserialized_user
 
-    def serialize(self, entity: SignUpEntity) -> UserEntity:
+    async def serialize(self, entity: SignUpEntity) -> UserEntity:
         delimiter = ' '
         first_name, *last_name = entity.full_name.split(delimiter)
         hash_password = self.password_manager.hash(password=entity.password)
@@ -45,18 +46,18 @@ class SignUpUseCase(UseCase):
         )
         return user_entity
 
-    def deserialize(self, user_entity: UserEntity) -> Dict:
+    async def deserialize(self, user_entity: UserEntity) -> Dict:
         return user_entity.__dict__
 
-    def check_if_email_is_available(self, email: str) -> bool:
-        user = self.repository.get(email=email)
+    async def check_if_email_is_available(self, email: str) -> bool:
+        user = await self.repository.get(email=email)
         return not user or not user.is_active
 
-    def user_register(self, user_entity: UserEntity) -> UserEntity:
-        registered_user = self.repository.create(user_entity=user_entity)
+    async def user_register(self, user_entity: UserEntity) -> UserEntity:
+        registered_user = await self.repository.create(user_entity=user_entity)
         return registered_user
 
-    def send_email(self, user_entity: UserEntity) -> None:
+    async def send_email(self, user_entity: UserEntity) -> None:
         send_email_entity = SendEmailEntity(
             subject='Your new account',
             email_from='from_root@root.com',
@@ -72,8 +73,8 @@ class SignUpConfirmationAccountUseCase(UseCase):
         self.repository: AuthenticationRepository = repository
         self.email_service: EmailService = email_service
 
-    def handler(self, confirmation_entity: SignUpConfirmationAccountEntity) -> Dict:
-        user = self.repository.get(email=confirmation_entity.email)
+    async def handler(self, confirmation_entity: SignUpConfirmationAccountEntity) -> Dict:
+        user = await self.repository.get(email=confirmation_entity.email)
 
         if not user:
             raise SignUpConfirmationAccountUseCaseException('User not found')
@@ -82,13 +83,14 @@ class SignUpConfirmationAccountUseCase(UseCase):
             raise SignUpConfirmationAccountUseCaseValidationError('Incorrect confirmation code')
 
         user.is_active = True
-        updated_user = self.repository.update(user_id=user.user_id, user_entity=user)
+        user.confirmation_code = None
+        updated_user = await self.repository.update(user_id=user.user_id, user_entity=user)
 
-        deserialized_user = self.deserialize(user_entity=updated_user)
+        deserialized_user = await self.deserialize(user_entity=updated_user)
         return deserialized_user
 
-    def serialize(*args, **kwargs):
+    async def serialize(*args, **kwargs):
         raise NotImplementedError
 
-    def deserialize(self, user_entity: UserEntity) -> Dict:
+    async def deserialize(self, user_entity: UserEntity) -> Dict:
         return user_entity.__dict__

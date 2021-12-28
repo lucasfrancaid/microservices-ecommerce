@@ -10,6 +10,8 @@ fastapi = "*"
 uvicorn = "*"
 requests = "*"
 python-decouple = "*"
+sqlalchemy = {version = "*", extras = ["asyncio"]}
+aiosqlite = "*"
 
 [requires]
 python_version = "3.9"
@@ -19,3 +21,4 @@ pytest = "*"
 coverage = "*"
 yapf = "*"
 pre-commit = "*"
+pytest-asyncio = "*"

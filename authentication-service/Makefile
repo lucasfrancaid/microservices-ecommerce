@@ -1,8 +1,9 @@
 ENV_FILE := .env
+PYTHON_PATH := $(shell pwd)
 
 run:
 	@echo '--> Starting Authentication Service'
-	@uvicorn src.adapters.fastapi.main:app --reload --host 0.0.0.0 --port 8000
+	@PYTHONPATH=${PYTHON_PATH} python ./src/adapters/http/fastapi/main.py
 
 test: dev_packages
 	@echo '--> Running Tests for Authentication Service'
@@ -28,4 +29,4 @@ clean_cache:
 	@find . -name "*.pyo" | xargs rm -rf
 	@find . -name "__pycache__" -type d | xargs rm -rf
 	@find . -name ".pytest_cache" -type d | xargs rm -rf
-	@echo "- Ok"
+	@echo "--> Ok"
