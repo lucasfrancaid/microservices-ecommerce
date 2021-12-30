@@ -106,8 +106,8 @@ async def test_authentication_repository_in_memory_update_non_existent_user(user
 
 
 @pytest.mark.asyncio
-async def test_authentication_repository_in_memory_delete_non_existent_user_must_be_false(user_entity_dict: Dict):
+async def test_authentication_repository_in_memory_delete_non_existent_user_must_be_none(user_entity_dict: Dict):
     repository = AuthenticationRepositoryInMemory()
     repository.storage.flush()
 
-    assert await repository.delete(user_id=1232232) is False
+    assert await repository.delete(user_id=1232232) is None

@@ -4,6 +4,7 @@ from typing import List, Optional, Union
 from src.application.entities.repository import RepositoryConfigurationEntity
 from src.application.patterns.singleton import Singleton
 from src.application.repositories.authentication import AuthenticationRepository
+from src.application.repositories.helpers.authentication import verify_if_user_exists
 from src.domain.entities.user import UserEntity
 
 
@@ -40,16 +41,14 @@ class AuthenticationRepositoryInMemory(AuthenticationRepository):
         self.storage.data.append(user_entity)
         return user_entity
 
+    @verify_if_user_exists
     async def update(self, user_id: int, user_entity: UserEntity) -> Union[UserEntity, None]:
         index = [index for index, user in enumerate(self.storage.data) if user.user_id == user_id]
-        if not index:
-            return None
         self.storage.data[index[0]] = user_entity
         return user_entity
 
-    async def delete(self, user_id: int) -> bool:
+    @verify_if_user_exists
+    async def delete(self, user_id: int) -> Union[bool, None]:
         index = [index for index, user in enumerate(self.storage.data) if user.user_id == user_id]
-        if not index:
-            return False
         self.storage.data.pop(index[0])
         return True

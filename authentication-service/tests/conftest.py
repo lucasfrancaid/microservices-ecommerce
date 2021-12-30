@@ -16,7 +16,7 @@ def fastapi_client() -> TestClient:
     return client
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 async def factory() -> ApplicationFactory:
     return await factory_application()
 
@@ -93,5 +93,5 @@ def sign_up_entity_dict() -> Dict:
 
 @pytest.fixture
 def sign_up_confirmation_account_entity_dict() -> Dict:
-    sign_up_confirmation = {'email': 'lucas.account@entity.com', 'confirmation_code': 123}
+    sign_up_confirmation = {'email': 'lucas.unique@account.com', 'confirmation_code': 123}
     return sign_up_confirmation

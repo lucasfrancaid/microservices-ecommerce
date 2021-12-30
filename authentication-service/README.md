@@ -6,11 +6,11 @@
 - Recovery Password
 
 ## Stack
-- Python 3.9
-- SqlAlchemy Async
-- PostgreSQL
-- Pytest
-- FastAPI as Adapter
+- **Language**: Python 3.9
+- **DBMS**: PostgreSQL 12
+- **API Rest Framework**: FastAPI (Async)
+- **ORM Framework**: SqlAlchemy (Async)
+- **Test Framework**: Pytest (Async)
 
 ## Setup
 Install packages and activate virtual environment:
@@ -47,7 +47,7 @@ make test args='-v -s -m "not fastapi and not sqlite"'
 
 Running adapter tests (Faster):
 ```bash
-make test args='-v -s -m fastapi' # or sqlite
+make test args='-v -s -m fastapi' # or sqlalchemy
 ```
 
 
@@ -57,7 +57,9 @@ make coverage
 ```
 
 ## To do
+- Test infrastructure.orm and adapters.http.fastapi.main
+- Implement delete method in Sqlite Repository
 - Add a free email service
-- Add PostgreSQL as Database with SqlAlchemy (add databse strategy to instance from env config)
+- Add PostgreSQL as Database with SqlAlchemy (add database strategy to instance from env config)
 - Sign In Use Case
 - Recovery Password Use Case

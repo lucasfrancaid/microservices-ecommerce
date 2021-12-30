@@ -127,7 +127,6 @@ async def test_sign_up_confirmation_account_use_case_deserialize(user_entity_dic
 async def test_sign_up_confirmation_account_use_case_handler(
     sign_up_confirmation_account_entity_dict: Dict, user_entity_dict: Dict
 ):
-    sign_up_confirmation_account_entity_dict['email'] = 'lucas.unique@account.com'
     entity = SignUpConfirmationAccountEntity(**sign_up_confirmation_account_entity_dict)
     user_entity = UserEntity(**user_entity_dict)
     use_case = SignUpConfirmationAccountUseCase(repository=repository, email_service=email_service)

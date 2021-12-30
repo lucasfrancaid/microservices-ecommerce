@@ -1,7 +1,7 @@
 import pytest
 
 from src.adapters.repositories.authentication_in_memory import AuthenticationRepositoryInMemory
-from src.adapters.repositories.authentication_sqlite import AuthenticationRepositorySqlite
+from src.adapters.repositories.authentication_sqlalchemy import AuthenticationRepositorySqlAlchemy
 from src.application.repositories.authentication import AuthenticationRepository
 from src.application.services.email import EmailService, EmailServiceFake
 from src.application.security.password_manager import PasswordManager, PasswordManagerFake
@@ -31,6 +31,6 @@ async def test_factory_application():
     assert isinstance(factory.password_manager, PasswordManagerBcrypt)
 
     if static_settings.ENVIRONMENT in ('dev', 'prod'):
-        assert isinstance(factory.repository, AuthenticationRepositorySqlite)
+        assert isinstance(factory.repository, AuthenticationRepositorySqlAlchemy)
     else:
         assert isinstance(factory.repository, AuthenticationRepositoryInMemory)

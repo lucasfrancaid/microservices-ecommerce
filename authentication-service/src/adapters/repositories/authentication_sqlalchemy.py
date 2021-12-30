@@ -1,15 +1,16 @@
 from typing import Dict, List, Optional, Union
 
-from sqlalchemy import select, update
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.application.entities.repository import RepositoryConfigurationEntity
 from src.application.repositories.authentication import AuthenticationRepository
+from src.application.repositories.helpers.authentication import verify_if_user_exists
 from src.domain.entities.user import UserEntity
 from src.infrastructure.orm.sqlalchemy.models.user import User
 
 
-class AuthenticationRepositorySqlite(AuthenticationRepository):
+class AuthenticationRepositorySqlAlchemy(AuthenticationRepository):
 
     def __init__(self, session: AsyncSession, configuration: RepositoryConfigurationEntity = None) -> None:
         self.session = session
@@ -31,20 +32,29 @@ class AuthenticationRepositorySqlite(AuthenticationRepository):
         user = UserEntity(**self.__serialize_to_dict(result)) if result else None
         return user
 
-    async def create(self, user_entity: UserEntity = None) -> Union[UserEntity, None]:
+    async def create(self, user_entity: UserEntity) -> Union[UserEntity, None]:
         user = User(**user_entity.__dict__)
         self.session.add(user)
         await self.session.commit()
         await self.session.flush()
         return user_entity
 
-    async def update(self, user_id: int = None, user_entity: UserEntity = None) -> Union[UserEntity, None]:
+    @verify_if_user_exists
+    async def update(self, user_id: int, user_entity: UserEntity) -> Union[UserEntity, None]:
         query = update(User).where(User.user_id == user_id)
         query = query.values(**self.__serialize_to_dict_update(user_entity))
         await self.session.execute(query)
         await self.session.commit()
         await self.session.flush()
         return user_entity
+
+    @verify_if_user_exists
+    async def delete(self, user_id: int) -> Union[bool, None]:
+        query = delete(User).where(User.user_id == user_id)
+        await self.session.execute(query)
+        await self.session.commit()
+        await self.session.flush()
+        return True
 
     @staticmethod
     def __serialize_to_dict(user: User) -> Dict:
@@ -59,6 +69,3 @@ class AuthenticationRepositorySqlite(AuthenticationRepository):
         del user_serialize['user_id']
         del user_serialize['created_at']
         return user_serialize
-
-    async def delete(self, user_id: int = None) -> bool:
-        raise NotImplementedError
