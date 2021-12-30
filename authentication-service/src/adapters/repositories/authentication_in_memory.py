@@ -36,7 +36,7 @@ class AuthenticationRepositoryInMemory(AuthenticationRepository):
     async def create(self, user_entity: UserEntity) -> Union[UserEntity, None]:
         self.storage.next_id += 1
         user_entity.user_id = self.storage.next_id
-        user_entity.confirmation_code = self.storage.next_id    # TODO: Confirmation code is domain of SignUpEntity
+        user_entity.confirmation_code = self.storage.next_id
         user_entity.created_at = datetime.now()
         self.storage.data.append(user_entity)
         return user_entity

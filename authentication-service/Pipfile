@@ -12,6 +12,7 @@ requests = "*"
 python-decouple = "*"
 sqlalchemy = {version = "*", extras = ["asyncio"]}
 aiosqlite = "*"
+asyncpg = "*"
 
 [requires]
 python_version = "3.9"

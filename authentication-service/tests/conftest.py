@@ -6,7 +6,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.infrastructure.factories.app import ApplicationFactory, factory_application
+from src.infrastructure.factories.email_service import EmailServiceFactory
 from src.infrastructure.factories.orm import SqlAlchemyFactory
+from src.infrastructure.factories.password_manager import PasswordManagerFactory
+from src.infrastructure.factories.repository import RepositoryFactory
 
 
 @pytest.fixture(scope='session')
@@ -46,6 +49,15 @@ async def sqlalchemy_session(manage_database) -> AsyncSession:
     await session.close()
 
 
+@pytest.fixture(scope='session')
+def fake_factory() -> ApplicationFactory:
+    return ApplicationFactory(
+        repository=RepositoryFactory.in_memory(),
+        password_manager=PasswordManagerFactory.fake(),
+        email_service=EmailServiceFactory.fake()
+    )
+
+
 @pytest.fixture
 def user_entity_dict() -> Dict:
     user = {
@@ -53,7 +65,7 @@ def user_entity_dict() -> Dict:
         'first_name': 'Lucas',
         'last_name': 'França',
         'email': 'lucas@entity.com',
-        'hash_password': 'MyPass123'.encode(),
+        'hash_password': 'MyPass123',
     }
     return user
 

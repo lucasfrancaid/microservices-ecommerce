@@ -32,3 +32,24 @@ def test_user_entity_created_at_custom_datetime(user_entity_dict: Dict):
     user_entity = UserEntity(**user_entity_dict)
 
     assert user_entity.created_at == datetime_now
+
+
+def test_user_entity_factory_confirmation_code(user_entity_dict: Dict):
+    user_entity_dict['user_id'] = None
+    assert user_entity_dict.get('confirmation_code') is None
+
+    user_entity = UserEntity(**user_entity_dict)
+
+    assert isinstance(user_entity.confirmation_code, int)
+    assert len(str(user_entity.confirmation_code)) == 6
+
+
+def test_user_entity_factory_confirmation_code_should_not_be_called_when_user_id_or_is_active_is_true(
+    user_entity_dict: Dict
+):
+    user_entity_dict['is_active'] = True
+    assert user_entity_dict.get('confirmation_code') is None
+
+    user_entity = UserEntity(**user_entity_dict)
+
+    assert user_entity.confirmation_code is None

@@ -11,7 +11,7 @@ class UserEntity:
     first_name: str
     last_name: str
     email: str
-    hash_password: bytes
+    hash_password: str
     is_active: Optional[bool] = False
     confirmation_code: Optional[int] = None
     created_at: Optional[datetime] = None

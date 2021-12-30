@@ -58,8 +58,6 @@ make coverage
 
 ## To do
 - Test infrastructure.orm and adapters.http.fastapi.main
-- Implement delete method in Sqlite Repository
 - Add a free email service
-- Add PostgreSQL as Database with SqlAlchemy (add database strategy to instance from env config)
 - Sign In Use Case
 - Recovery Password Use Case

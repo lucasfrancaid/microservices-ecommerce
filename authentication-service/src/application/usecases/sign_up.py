@@ -36,7 +36,7 @@ class SignUpUseCase(UseCase):
     async def serialize(self, entity: SignUpEntity) -> UserEntity:
         delimiter = ' '
         first_name, *last_name = entity.full_name.split(delimiter)
-        hash_password = self.password_manager.hash(password=entity.password)
+        hash_password = self.password_manager.hash(password=entity.password).decode()
         user_entity = UserEntity(
             user_id=None,
             first_name=first_name,
