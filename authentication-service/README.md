@@ -19,15 +19,19 @@ pipenv install
 pipenv shell
 ```
 
-Create a .env file:
-```bash
-cp .env.sample .env
-```
-
 Run application:
 ```bash
 make run
 ```
+
+Run application with Docker Compose:
+```bash
+docker-compose up --build
+```
+
+- Health Check: http://127.0.0.1:8000/health-check
+- Swagger: http://127.0.0.1:8000/docs
+- Redoc: http://127.0.0.1:8000/redoc
 
 ## Tests
 To run tests locally, is necessary activate virtualenv:
@@ -50,14 +54,13 @@ Running adapter tests (Faster):
 make test args='-v -s -m fastapi' # or sqlalchemy
 ```
 
-
 Coverage generate:
 ```bash
 make coverage
 ```
 
 ## To do
-- Test infrastructure.orm and adapters.http.fastapi.main
+- Add Alembic to manage migrations (Improve database startup)
 - Add a free email service
 - Sign In Use Case
 - Recovery Password Use Case

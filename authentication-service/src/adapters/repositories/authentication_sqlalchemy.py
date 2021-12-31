@@ -13,7 +13,7 @@ from src.infrastructure.orm.sqlalchemy.models.user import User
 class AuthenticationRepositorySqlAlchemy(AuthenticationRepository):
 
     def __init__(self, session: AsyncSession, configuration: RepositoryConfigurationEntity = None) -> None:
-        self.session = session
+        self.session: AsyncSession = session
         self.configuration: RepositoryConfigurationEntity = configuration
 
     async def all(self, page: int = 1, limit: int = 20) -> List[Optional[UserEntity]]:

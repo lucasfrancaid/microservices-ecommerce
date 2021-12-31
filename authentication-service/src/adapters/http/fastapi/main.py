@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 from src.adapters.http.fastapi.controllers.sign_up import sign_up_router
 from src.infrastructure.config.settings import static_settings
-from src.infrastructure.orm.sqlalchemy.database import Base, engine
+from src.infrastructure.orm.sqlalchemy.database import DatabaseManager
 
 app = FastAPI(
     title='Authentication',
@@ -16,9 +16,8 @@ app.include_router(sign_up_router)
 
 @app.on_event('startup')
 async def startup():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
+    await DatabaseManager.drop_database()
+    await DatabaseManager.create_database()
 
 
 @app.get('/health-check', tags=['Default'], response_class=JSONResponse)
