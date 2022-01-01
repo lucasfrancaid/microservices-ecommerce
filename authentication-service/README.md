@@ -46,7 +46,7 @@ make test args='-v -s'
 
 Running core tests (Faster):
 ```bash
-make test args='-v -s -m "not fastapi and not sqlite"'
+make test args='-v -s -m "not fastapi and not sqlalchemy"'
 ```
 
 Running adapter tests (Faster):
