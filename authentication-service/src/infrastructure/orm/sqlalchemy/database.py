@@ -11,13 +11,13 @@ Base = declarative_base()
 class DatabaseManager:
 
     @staticmethod
-    async def create_database() -> AsyncConnection:
+    async def create_all() -> AsyncConnection:
         async with engine.begin() as connection:
             await connection.run_sync(Base.metadata.create_all)
             return connection
 
     @staticmethod
-    async def drop_database() -> AsyncConnection:
+    async def drop_all() -> AsyncConnection:
         async with engine.begin() as connection:
             await connection.run_sync(Base.metadata.drop_all)
             return connection

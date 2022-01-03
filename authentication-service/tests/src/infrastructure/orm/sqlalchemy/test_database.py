@@ -17,7 +17,7 @@ def test_database_constants():
 @pytest.mark.sqlalchemy
 @pytest.mark.asyncio
 async def test_database_manager_create_database():
-    connection = await DatabaseManager.create_database()
+    connection = await DatabaseManager.create_all()
     session = await SqlAlchemyFactory.session()
 
     result = await session.execute('SELECT * FROM users;')
@@ -32,7 +32,7 @@ async def test_database_manager_create_database():
 @pytest.mark.sqlalchemy
 @pytest.mark.asyncio
 async def test_database_manager_drop_database():
-    connection = await DatabaseManager.drop_database()
+    connection = await DatabaseManager.drop_all()
     session = await SqlAlchemyFactory.session()
 
     with pytest.raises(OperationalError) as exc:
