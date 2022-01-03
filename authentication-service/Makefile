@@ -14,6 +14,14 @@ coverage:
 	@coverage report -m
 	@coverage html
 
+migration:
+	@echo '--> Making migration for Authentication Service'
+	@alembic revision --autogenerate -m "$(message)"
+
+migrate:
+	@echo '--> Migrating upgrades for Authentication Service Database'
+	@alembic upgrade head
+
 pre-commit:
 	@echo '--> Running pre-commit yapf formatter and pytest hooks'
 	@pre-commit install

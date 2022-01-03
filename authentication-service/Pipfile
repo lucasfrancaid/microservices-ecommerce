@@ -11,8 +11,8 @@ uvicorn = "*"
 requests = "*"
 python-decouple = "*"
 sqlalchemy = {version = "*", extras = ["asyncio"]}
-aiosqlite = "*"
 asyncpg = "*"
+alembic = "*"
 
 [requires]
 python_version = "3.9"
@@ -23,3 +23,4 @@ coverage = "*"
 yapf = "*"
 pre-commit = "*"
 pytest-asyncio = "*"
+aiosqlite = "*"

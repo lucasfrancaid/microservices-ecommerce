@@ -6,8 +6,9 @@
 - Recovery Password
 
 ## Stack
+- **Software Design**: Clean Architecture
 - **Language**: Python 3.9
-- **DBMS**: PostgreSQL 12
+- **DBMS**: PostgreSQL
 - **API Rest Framework**: FastAPI (Async)
 - **ORM Framework**: SqlAlchemy (Async)
 - **Test Framework**: Pytest (Async)
@@ -19,12 +20,18 @@ pipenv install
 pipenv shell
 ```
 
+Run postgres database with Docker Compose:
+```bash
+docker-compose up -d postgres
+make migrate
+```
+
 Run application:
 ```bash
 make run
 ```
 
-Run application with Docker Compose:
+Run application with Docker Compose (*Don't need packages installation, database initialization and migrate command*):
 ```bash
 docker-compose up --build
 ```
@@ -56,11 +63,25 @@ make test args='-v -s -m fastapi' # or sqlalchemy
 
 Coverage generate:
 ```bash
-make coverage
+make coverage # Current coverage: 99%
+```
+
+## Migrations
+To run a new migration, is necessary activate virtualenv:
+```bash
+pipenv shell
+```
+
+Making a new migration:
+```bash
+make migration message='Add Users table' # Change de message according implementation
+```
+Upgrading database with migrations:
+```bash
+make migrate
 ```
 
 ## To do
-- Add Alembic to manage migrations (Improve database startup)
-- Add a free email service
 - Sign In Use Case
 - Recovery Password Use Case
+- Add a free email service
