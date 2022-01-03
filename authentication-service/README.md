@@ -10,7 +10,7 @@
 - **Language**: Python 3.9
 - **DBMS**: PostgreSQL
 - **API Rest Framework**: FastAPI (Async)
-- **ORM Framework**: SqlAlchemy (Async)
+- **ORM Framework**: SqlAlchemy (Async) + Alembic (for Migrations)
 - **Test Framework**: Pytest (Async)
 
 ## Setup
@@ -33,7 +33,7 @@ make run
 
 Run application with Docker Compose (*Don't need packages installation, database initialization and migrate command*):
 ```bash
-docker-compose up --build
+docker-compose up --build postgres server
 ```
 
 - Health Check: http://127.0.0.1:8000/health-check
@@ -48,17 +48,17 @@ pipenv shell
 
 Running all tests (Slower):
 ```bash
-make test args='-v -s'
+make test args='-v'
 ```
 
 Running core tests (Faster):
 ```bash
-make test args='-v -s -m "not fastapi and not sqlalchemy"'
+make test args='-v -m "not fastapi and not sqlalchemy"'
 ```
 
 Running adapter tests (Faster):
 ```bash
-make test args='-v -s -m fastapi' # or sqlalchemy
+make test args='-v -m fastapi' # or sqlalchemy
 ```
 
 Coverage generate:
@@ -67,14 +67,14 @@ make coverage # Current coverage: 99%
 ```
 
 ## Migrations
-To run a new migration, is necessary activate virtualenv:
+To run migrations, is necessary activate virtualenv:
 ```bash
 pipenv shell
 ```
 
 Making a new migration:
 ```bash
-make migration message='Add Users table' # Change de message according implementation
+make migration message='Add Users table' # Change message according to implementation
 ```
 Upgrading database with migrations:
 ```bash
@@ -85,3 +85,4 @@ make migrate
 - Sign In Use Case
 - Recovery Password Use Case
 - Add a free email service
+- Test src.infrastructure.orm.migrations
