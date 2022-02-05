@@ -1,8 +1,8 @@
-import re
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
 
 from src.application.entities.exceptions import EmailEntityValidationError, SendEmailEntityValidationError
+from src.application.validators.email import EmailValidator
 
 
 @dataclass
@@ -10,14 +10,7 @@ class EmailEntity:
     email: str
 
     def __post_init__(self):
-        self.validate_email(self.email)
-
-    @staticmethod
-    def validate_email(email: str, exception_class: ValueError = EmailEntityValidationError) -> str:
-        email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-        if not re.fullmatch(email_pattern, email):
-            raise exception_class(f'Email {email} is an invalid email')
-        return email
+        EmailValidator.validate_email(self.email, exception_class=EmailEntityValidationError)
 
 
 @dataclass
@@ -28,8 +21,11 @@ class SendEmailEntity:
     body: Union[Dict, str]
 
     def __post_init__(self):
-        EmailEntity.validate_email(self.email_from, exception_class=SendEmailEntityValidationError)
-        [EmailEntity.validate_email(email, exception_class=SendEmailEntityValidationError) for email in self.email_to]
+        EmailValidator.validate_email(self.email_from, exception_class=SendEmailEntityValidationError)
+        [
+            EmailValidator.validate_email(email, exception_class=SendEmailEntityValidationError)
+            for email in self.email_to
+        ]
 
 
 @dataclass
