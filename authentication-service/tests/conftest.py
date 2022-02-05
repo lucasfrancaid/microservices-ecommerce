@@ -53,8 +53,8 @@ async def sqlalchemy_session(manage_database) -> AsyncSession:
 def fake_factory() -> ApplicationFactory:
     return ApplicationFactory(
         repository=RepositoryFactory.in_memory(),
-        password_manager=PasswordManagerFactory.fake(),
-        email_service=EmailServiceFactory.fake()
+        password_manager=PasswordManagerFactory.none(),
+        email_service=EmailServiceFactory.none()
     )
 
 
@@ -107,3 +107,9 @@ def sign_up_entity_dict() -> Dict:
 def sign_up_confirmation_account_entity_dict() -> Dict:
     sign_up_confirmation = {'email': 'lucas.unique@account.com', 'confirmation_code': 123}
     return sign_up_confirmation
+
+
+@pytest.fixture
+def sign_in_entity_dict() -> Dict:
+    sign_in = {'email': 'lucas.signin@account.com', 'password': 'MyPass123'}
+    return sign_in

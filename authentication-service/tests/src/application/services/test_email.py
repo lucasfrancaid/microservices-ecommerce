@@ -1,6 +1,6 @@
 import pytest
 
-from src.application.services.email import EmailService, EmailServiceFake
+from src.application.services.email import EmailService, EmailServiceNone
 
 
 def test_email_service_abstract_class():
@@ -10,8 +10,8 @@ def test_email_service_abstract_class():
         EmailService().send()
 
 
-def test_email_service_fake():
-    provider = EmailServiceFake()
+def test_email_service_none():
+    provider = EmailServiceNone()
 
     assert provider.configuration is None
     assert provider.send(email_entity=None) is None

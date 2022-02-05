@@ -1,8 +1,8 @@
-from src.application.services.email import EmailServiceFake
+from src.application.services.email import EmailServiceNone
 
 
 class EmailServiceFactory:
 
     @staticmethod
-    def fake() -> EmailServiceFake:
-        return EmailServiceFake()
+    def none() -> EmailServiceNone:
+        return EmailServiceNone()

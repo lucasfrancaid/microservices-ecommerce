@@ -7,14 +7,14 @@ from src.application.entities.email import SendEmailEntity, EmailServiceConfigur
 class EmailService(ABC):
 
     @abstractmethod
-    def send(self, email_entity: SendEmailEntity = None):
+    def send(self, email_entity: SendEmailEntity = None) -> Any:
         raise NotImplementedError
 
 
-class EmailServiceFake(EmailService):
+class EmailServiceNone(EmailService):
 
     def __init__(self, configuration: EmailServiceConfigurationEntity = None) -> None:
         self.configuration: EmailServiceConfigurationEntity = configuration
 
-    def send(self, email_entity: SendEmailEntity = None) -> Any:
+    def send(self, email_entity: SendEmailEntity = None) -> None:
         pass

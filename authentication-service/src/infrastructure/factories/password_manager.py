@@ -1,4 +1,4 @@
-from src.application.security.password_manager import PasswordManagerFake
+from src.application.security.password_manager import PasswordManagerNone
 from src.infrastructure.config.settings import static_settings
 from src.infrastructure.security.bcrypt import PasswordManagerBcrypt
 
@@ -6,8 +6,8 @@ from src.infrastructure.security.bcrypt import PasswordManagerBcrypt
 class PasswordManagerFactory:
 
     @staticmethod
-    def fake() -> PasswordManagerFake:
-        return PasswordManagerFake()
+    def none() -> PasswordManagerNone:
+        return PasswordManagerNone()
 
     @staticmethod
     def bcrypt() -> PasswordManagerBcrypt:
