@@ -9,7 +9,7 @@ from src.infrastructure.factories.app import ApplicationFactory, factory_applica
 from src.infrastructure.factories.email_service import EmailServiceFactory
 from src.infrastructure.factories.orm import SqlAlchemyFactory
 from src.infrastructure.factories.password_manager import PasswordManagerFactory
-from src.infrastructure.factories.repository import RepositoryFactory
+from src.infrastructure.factories.repository import AuthenticationRepositoryFactory
 
 
 @pytest.fixture(scope='session')
@@ -52,7 +52,7 @@ async def sqlalchemy_session(manage_database) -> AsyncSession:
 @pytest.fixture(scope='session')
 def fake_factory() -> ApplicationFactory:
     return ApplicationFactory(
-        repository=RepositoryFactory.in_memory(),
+        repository=AuthenticationRepositoryFactory.in_memory(),
         password_manager=PasswordManagerFactory.none(),
         email_service=EmailServiceFactory.none()
     )

@@ -4,7 +4,7 @@ from src.application.security.token_manager import TokenManager
 from src.application.services.email import EmailService
 from src.infrastructure.factories.email_service import EmailServiceFactory
 from src.infrastructure.factories.password_manager import PasswordManagerFactory
-from src.infrastructure.factories.repository import RepositoryFactory
+from src.infrastructure.factories.repository import AuthenticationRepositoryFactory
 from src.infrastructure.factories.token_manager import TokenManagerFactory
 
 
@@ -25,7 +25,7 @@ class ApplicationFactory:
 
 async def factory_application() -> ApplicationFactory:
     factory = ApplicationFactory(
-        repository=await RepositoryFactory.make(),
+        repository=await AuthenticationRepositoryFactory.make(),
         password_manager=PasswordManagerFactory.bcrypt(),
         token_manager=TokenManagerFactory.none(),
         email_service=EmailServiceFactory.none()

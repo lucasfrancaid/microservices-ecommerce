@@ -5,12 +5,12 @@ from src.infrastructure.config.settings import static_settings
 from src.infrastructure.factories.orm import SqlAlchemyFactory
 
 
-class RepositoryFactory:
+class AuthenticationRepositoryFactory:
 
     @staticmethod
     async def make() -> AuthenticationRepository:
-        repository = await RepositoryFactory.sqlalchemy() \
-            if static_settings.ENVIRONMENT in ('dev', 'prod') else RepositoryFactory.in_memory()
+        repository = await AuthenticationRepositoryFactory.sqlalchemy() \
+            if static_settings.ENVIRONMENT in ('dev', 'prod') else AuthenticationRepositoryFactory.in_memory()
         return repository
 
     @staticmethod
