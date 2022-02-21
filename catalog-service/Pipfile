@@ -6,8 +6,15 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
+python-decouple = "*"
+pydantic = "*"
+requests = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-asyncio = "*"
+pytest-env = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.9"

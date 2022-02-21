@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: catalog-service
+    build: .
+    depends_on:
+      - mongo
+    ports:
+      - '8001:8001'
+    volumes:
+      - .:/app
+    env_file:
+      - .env.sample
+    environment:
+      DATABASE_URL: mongodb://root:toor@mongo:27017/
+    command: make run
+
+  mongo:
+    container_name: catalog-service-mongo
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+    ports:
+      - '27017:27017'
